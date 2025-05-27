@@ -70,7 +70,44 @@
       color:#555;
       line-height:1.4;
     }
-    /* ============================== */
+
+    /* ——— Jauge DPE ——— */
+    #dpe-gauge {
+      position: relative;
+      display: flex;
+      flex-direction: column-reverse;
+      width: 40px;
+      height: 160px;
+      margin-bottom: .5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #f5f5f5;
+    }
+    .dpe-bar {
+      flex: 1;
+      text-align: center;
+      font-size: .65rem;
+      line-height: 1;
+      color: #fff;
+      opacity: .3;
+    }
+    .dpe-bar.Aplus { background: #006400; }
+    .dpe-bar.A     { background: #2e7d32; }
+    .dpe-bar.B     { background: #558b2f; }
+    .dpe-bar.C     { background: #9ccc65; }
+    .dpe-bar.D     { background: #ffeb3b; color:#333; }
+    .dpe-bar.E     { background: #ffb300; color:#333; }
+    .dpe-bar.F     { background: #f4511e; }
+    .dpe-bar.G     { background: #d32f2f; }
+    #dpe-pointer {
+      position: absolute;
+      left: 0; right: 0;
+      height: 4px;
+      background: #000;
+      transition: transform .5s;
+    }
+    /* ————————————————————————— */
 
     /* -- DIMENSIONS CARDS -- */
     .dimensions {
@@ -209,6 +246,20 @@
       <!-- panneau énergie (ajouté) -->
       <div id="energy-summary">
         <h3>Performance énergétique estimée</h3>
+
+        <!-- Jauge DPE -->
+        <div id="dpe-gauge">
+          <div class="dpe-bar Aplus">A+</div>
+          <div class="dpe-bar A">A</div>
+          <div class="dpe-bar B">B</div>
+          <div class="dpe-bar C">C</div>
+          <div class="dpe-bar D">D</div>
+          <div class="dpe-bar E">E</div>
+          <div class="dpe-bar F">F</div>
+          <div class="dpe-bar G">G</div>
+          <div id="dpe-pointer"></div>
+        </div>
+
         <div class="energy-line"><span>Consommation :</span><span id="energy-value">0 kWh/an</span></div>
         <div class="energy-line"><span>Matériau :</span><span id="energy-class">–</span></div>
         <div class="energy-bar"><div id="energy-bar-fill"></div></div>
@@ -236,110 +287,9 @@
     <!-- CONTROLES -->
     <div class="controls">
       <h2>Configuration Modern’home</h2>
-
-      <!-- Menuiserie ALU -->
-      <div class="group" data-cat="Menuiserie">
-        <h3>Menuiserie ALU</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499"></div>
-            <div class="option-label">Noir</div>
-            <div class="option-price">+2 499 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gouttière et descente -->
-      <div class="group" data-cat="Gouttiere">
-        <h3>Gouttière et descente</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pergola bioclimatique -->
-      <div class="group" data-cat="Pergola">
-        <h3>Pergola bioclimatique</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+8 500 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500"></div>
-            <div class="option-label">Noir</div>
-            <div class="option-price">+9 500 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Peinture (mur extérieur) -->
-      <div class="group" data-cat="Murs">
-        <h3>Peinture (mur extérieur)</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
-            <div class="option-label">Beige WES</div>
-            <div class="option-price">+999 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
-            <div class="option-label">Ocre Mojave</div>
-            <div class="option-price">+1 499 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tôle ondulée -->
-      <div class="group" data-cat="Toit">
-        <h3>Tôle ondulée</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
-            <div class="option-label">Bleu Ardoise</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#A6A6A6" data-color="#A6A6A6" data-cost="0"></div>
-            <div class="option-label">Gris Acier</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800"></div>
-            <div class="option-label">Rouge Hibiscus</div>
-            <div class="option-price">+1 800 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Récapitulatif de prix -->
-      <div id="price-summary">
-        <h3>Récapitulatif de prix</h3>
-        <div class="line"><span>Prix de base :</span><span id="base-price">170 000 €</span></div>
-        <div class="line"><span>Vos options :</span><span id="opt-price">0 €</span></div>
-        <div class="line total"><span>Total TTC :</span><span id="total-price">170 000 €</span></div>
-      </div>
-
-      <!-- Boutons d’action -->
-      <div class="action-buttons">
-        <button class="btn-save">Enregistrer la configuration</button>
-        <button class="btn-quote">Demander un devis</button>
-      </div>
+      <!-- … (Rien d’autre ne change ici, tout votre code d’options) … -->
+      <!-- Copiez-collez exactement ce que vous aviez -->
+      <!-- … -->
     </div>
   </div>
 
@@ -371,12 +321,12 @@
     };
 
     function getEnergyClass(kwh) {
-      if (kwh < 2000) return 'A';
-      if (kwh < 2500) return 'B';
-      if (kwh < 3000) return 'C';
-      if (kwh < 3500) return 'D';
-      if (kwh < 4000) return 'E';
-      return 'F';
+      if (kwh < 2000) return 'A+';
+      if (kwh < 2500) return 'A';
+      if (kwh < 3000) return 'B';
+      if (kwh < 3500) return 'C';
+      if (kwh < 4000) return 'D';
+      return 'E';
     }
     // --------------------------------------------------
 
@@ -420,14 +370,22 @@
                     ? energyImpact[cat][col] : 0;
           sum += imp;
           const label = sw.nextElementSibling.textContent;
-          // **Ligne modifiée : on préfixe par la catégorie**
           lines.push(`${cat} – ${label} : ${imp>0? '+'+imp: imp} kWh/an`);
         });
 
         energyEl.textContent = sum.toLocaleString('fr-FR') + ' kWh/an';
         classEl.textContent  = getEnergyClass(sum);
-        const pct = Math.min(100, Math.round(sum/4000*100));
-        barFill.style.width = pct + '%';
+
+        // ——— mise à jour de la jauge DPE ———
+        const gauge = document.getElementById('dpe-gauge');
+        const pointer = document.getElementById('dpe-pointer');
+        const step = gauge.clientHeight / 8;
+        const map  = { 'A+':7,'A':6,'B':5,'C':4,'D':3,'E':2,'F':1,'G':0 };
+        const idx  = map[getEnergyClass(sum)] || 0;
+        pointer.style.transform = `translateY(-${step*idx + step/2}px)`;
+        // ————————————————————————————————
+
+        barFill.style.width = Math.min(100, Math.round(sum/4000*100)) + '%';
 
         document.getElementById('energy-details').innerHTML =
           lines.length
@@ -482,3 +440,4 @@
 
 </body>
 </html>
+
