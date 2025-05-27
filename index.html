@@ -419,8 +419,9 @@
           const imp = (energyImpact[cat] && energyImpact[cat][col]!=null)
                     ? energyImpact[cat][col] : 0;
           sum += imp;
-          const label = sw.nextElementSibling.textContent;
-          lines.push(`${label} : ${imp>0? '+'+imp: imp} kWh/an`);
+         const label = sw.nextElementSibling.textContent;
+// on ajoute la catégorie devant le libellé couleur
+lines.push(`${cat} – ${label} : ${imp>0? '+'+imp: imp} kWh/an`);
         });
 
         energyEl.textContent = sum.toLocaleString('fr-FR') + ' kWh/an';
