@@ -27,9 +27,9 @@
       flex-direction:column;
     }
     model-viewer {
-      flex:1;
+      flex:2;                    /* ← agrandi */
       width:100%; height:100%;
-      background:#fafafa;
+      background:#dddddd;        /* ← fond plus gris */
       pointer-events: all;
       touch-action: none;
     }
@@ -70,6 +70,7 @@
       color:#555;
       line-height:1.4;
     }
+
     /* ——— Jauge DPE ——— */
     #dpe-gauge {
       position: relative;
@@ -101,6 +102,7 @@
     .dpe-bar.G     { background: #d32f2f; }
     #dpe-pointer {
       position: absolute;
+      bottom: 0;                /* ← ajouté */
       left: 0; right: 0;
       height: 4px;
       background: #000;
@@ -242,7 +244,7 @@
         max-camera-orbit="360deg 90deg  auto">
       </model-viewer>
 
-      <!-- panneau énergie (ajouté) -->
+      <!-- panneau énergie -->
       <div id="energy-summary">
         <h3>Performance énergétique estimée</h3>
 
@@ -268,18 +270,9 @@
 
       <!-- Dimensions sous le viewer -->
       <div class="dimensions">
-        <div class="dim-card">
-          <strong>85 m²</strong>
-          <span>Surface</span>
-        </div>
-        <div class="dim-card">
-          <strong>3 Ch</strong>
-          <span>Chambres</span>
-        </div>
-        <div class="dim-card">
-          <strong>2 SdE</strong>
-          <span>Salles d'eau</span>
-        </div>
+        <div class="dim-card"><strong>85 m²</strong><span>Surface</span></div>
+        <div class="dim-card"><strong>3 Ch</strong><span>Chambres</span></div>
+        <div class="dim-card"><strong>2 SdE</strong><span>Salles d'eau</span></div>
       </div>
     </div>
 
@@ -398,25 +391,25 @@
     // Impact énergétique annoncé en kWh/an
     const energyImpact = {
       Toit: {
-        '#1A2E3F': 3000,   // Bleu Ardoise
-        '#A6A6A6': 3200,   // Gris Acier
-        '#C0392B': 3500    // Rouge Hibiscus
+        '#1A2E3F': 3000,
+        '#A6A6A6': 3200,
+        '#C0392B': 3500
       },
       Pergola: {
-        '#FFFFFF': -200,   // Blanc
-        '#000000': -300    // Noir
+        '#FFFFFF': -200,
+        '#000000': -300
       },
       Murs: {
-        '#FFFFFF': 0,      // Blanc
-        '#D4C4A3': 100,    // Beige WES
-        '#E6C7B1': 150     // Ocre Mojave
+        '#FFFFFF': 0,
+        '#D4C4A3': 100,
+        '#E6C7B1': 150
       },
       Menuiserie: {
-        '#FFFFFF': 0,      // Blanc
-        '#000000': 50      // Noir
+        '#FFFFFF': 0,
+        '#000000': 50
       },
       Gouttiere: {
-        '#FFFFFF': 0       // Blanc
+        '#FFFFFF': 0
       }
     };
 
@@ -477,12 +470,12 @@
         classEl.textContent  = getEnergyClass(sum);
 
         // ——— mise à jour de la jauge DPE ———
-        const gauge    = document.getElementById('dpe-gauge');
-        const pointer  = document.getElementById('dpe-pointer');
-        const step     = gauge.clientHeight / 8;
-        const mapPos   = { 'A+':7,'A':6,'B':5,'C':4,'D':3,'E':2,'F':1,'G':0 };
-        const idx      = mapPos[getEnergyClass(sum)] || 0;
-        pointer.style.transform = `translateY(-${step*idx + step/2}px)`;
+        const gauge   = document.getElementById('dpe-gauge');
+        const pointer = document.getElementById('dpe-pointer');
+        const step    = gauge.clientHeight / 8;
+        const mapPos  = { 'A+':7,'A':6,'B':5,'C':4,'D':3,'E':2,'F':1,'G':0 };
+        const idx     = mapPos[getEnergyClass(sum)] || 0;
+        pointer.style.transform = `translateY(-${step * idx}px)`;  /* ← modifié */
         // ————————————————————————————————
 
         barFill.style.width = Math.min(100, Math.round(sum/4000*100)) + '%';
