@@ -34,6 +34,28 @@
     #price-summary h3 { margin-bottom:.75rem; font-size:1rem; color:#222 }
     #price-summary .line { display:flex; justify-content:space-between; margin-bottom:.5rem; font-size:.9rem; color:#333 }
     #price-summary .line.total { font-weight:700; font-size:1.1rem }
+        /* Bloc infographie énergétique */
+    #energy-summary {
+      background:#fff;
+      border:1px solid #eee;
+      border-radius:6px;
+      padding:1rem;
+      margin:1rem 0;
+      box-shadow:0 1px 4px rgba(0,0,0,0.05);
+    }
+    #energy-summary h3 {
+      margin-bottom:.75rem;
+      font-size:1rem;
+      color:#222;
+    }
+    #energy-summary .line {
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:.5rem;
+      font-size:.9rem;
+      color:#333;
+    }
+
     .action-buttons { display:flex; gap:.75rem }
     .action-buttons button { flex:1; padding:.75rem; font-size:.95rem; border:none; border-radius:4px; cursor:pointer }
     .btn-save  { background:#f0f0f0; color:#333 }
@@ -59,6 +81,19 @@
   min-camera-orbit="0deg   0deg   auto"
   max-camera-orbit="360deg 90deg  auto">
       </model-viewer>
+            <!-- … ton <model-viewer> ici … -->
+
+      <!-- === Nouveau : infos énergétiques === -->
+      <div id="energy-summary">
+        <h3>Impact énergétique</h3>
+        <div class="line"><span>Consommation estimée :</span><span id="energy-value">--- kWh/an</span></div>
+        <div class="line"><span>Classe énergétique :</span><span id="energy-class">–</span></div>
+      </div>
+
+      <!-- Dimensions sous le viewer -->
+      <div class="dimensions">
+      <!-- … -->
+
       <div class="dimensions">
         <div class="dim-card"><strong>85 m²</strong><span>Surface</span></div>
         <div class="dim-card"><strong>3 Ch</strong><span>Chambres</span></div>
@@ -182,6 +217,89 @@
     const optEl     = document.getElementById('opt-price');
     const totalEl   = document.getElementById('total-price');
     let   selection = {};
+  // juste en haut, après la const targets = { … }
+  // --------------------------------------------------
+  // Impact énergétique annoncé en kWh/an (exemples)
+  const energyImpact = {
+    Toit: {
+      '#133654': 3000,   // Bleu Ardoise → 3 000 kWh/an
+      '#777777': 3200,   // Gris Acier  → 3 200 kWh/an
+      '#CC3333': 3500    // Rouge Hibiscus → 3 500 kWh/an
+    },
+    Pergola: {
+      '#FFFFFF': -200,   // Blanc → réduit de 200 kWh/an (ombrage)
+      '#293133': -300    // Anthracite → réduit de 300 kWh/an
+    },
+    Murs: {
+      '#FFFFFF': 0,      // Blanc
+      '#CCC0AF': 100,    // Beige WES → +100 kWh/an absorption
+      '#E6C7B1': 150     // Ocre Mojave → +150 kWh/an
+    },
+    Menuiserie: {
+      '#FFFFFF': 0,      // Blanc
+      '#000000': 50      // Noir → +50 kWh/an infiltration solaire
+    },
+    Gouttiere: {
+      '#FFFFFF': 0       // Blanc
+    }
+  };
+
+  // Classe énergétique selon consommation
+  function getEnergyClass(kwh) {
+    if (kwh < 2000) return 'A';
+    if (kwh < 2500) return 'B';
+    if (kwh < 3000) return 'C';
+    if (kwh < 3500) return 'D';
+    if (kwh < 4000) return 'E';
+    return 'F';
+  }
+  // --------------------------------------------------
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const mv        = document.getElementById('mv');
+    const optEl     = document.getElementById('opt-price');
+    const totalEl   = document.getElementById('total-price');
+    const energyEl  = document.getElementById('energy-value');
+    const classEl   = document.getElementById('energy-class');
+    let selection   = {};
+
+    mv.addEventListener('load', () => {
+      // … ton code d’initialisation des mats & first.click() …
+
+      // Après ton handler de clic de swatch, ajoute :
+      function updateEnergy() {
+        let sum = 0;
+        // pour chaque catégorie choisie…
+        Object.entries(selection).forEach(([cat, cost]) => {
+          const sw = document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
+          if (!sw) return;
+          const color = sw.dataset.color;
+          // si on a un impact défini pour cette catégorie et cette couleur
+          if (energyImpact[cat] && energyImpact[cat][color] != null) {
+            sum += energyImpact[cat][color];
+          }
+        });
+        energyEl.textContent = sum.toLocaleString('fr-FR') + ' kWh/an';
+        classEl.textContent  = getEnergyClass(sum);
+      }
+
+      // modifie ton listener de swatch :
+      document.querySelectorAll('.group').forEach(group => {
+        const cat   = group.dataset.cat;
+        const frags = targets[cat]||[];
+        group.querySelectorAll('.swatch').forEach(sw => {
+          sw.addEventListener('click', () => {
+            // … ton code de sélection et recolor …
+            // mets ensuite à jour l’énergie :
+            updateEnergy();
+          });
+        });
+      });
+
+      // et enfin, lance une 1ère fois :
+      updateEnergy();
+    });
+  });
 
     // CIBLAGE des matériaux par catégorie
     const targets = {
