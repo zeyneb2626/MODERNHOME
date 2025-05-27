@@ -27,9 +27,9 @@
       flex-direction:column;
     }
     model-viewer {
-      flex:2;                    /* ← agrandi */
+      flex:2;                   /* modèle plus grand */
       width:100%; height:100%;
-      background:#dddddd;        /* ← fond plus gris */
+      background:#dddddd;       /* fond plus gris */
       pointer-events: all;
       touch-action: none;
     }
@@ -71,13 +71,13 @@
       line-height:1.4;
     }
 
-    /* ——— Jauge DPE ——— */
+    /* ——— Jauge DPE (horizontale) ——— */
     #dpe-gauge {
       position: relative;
       display: flex;
-      flex-direction: column-reverse;
-      width: 40px;
-      height: 160px;
+      flex-direction: row;
+      width: 100%;
+      height: 16px;
       margin-bottom: .5rem;
       border: 1px solid #ddd;
       border-radius: 4px;
@@ -88,27 +88,27 @@
       flex: 1;
       text-align: center;
       font-size: .65rem;
-      line-height: 1;
+      line-height: 16px;
       color: #fff;
       opacity: .3;
     }
     .dpe-bar.Aplus { background: #006400; }
     .dpe-bar.A     { background: #2e7d32; }
     .dpe-bar.B     { background: #558b2f; }
-    .dpe-bar.C     { background: #9ccc65; }
-    .dpe-bar.D     { background: #ffeb3b; color:#333; }
-    .dpe-bar.E     { background: #ffb300; color:#333; }
+    .dpe-bar.C     { background: #9ccc65; color:#000; }
+    .dpe-bar.D     { background: #ffeb3b; color:#000; }
+    .dpe-bar.E     { background: #ffb300; color:#000; }
     .dpe-bar.F     { background: #f4511e; }
     .dpe-bar.G     { background: #d32f2f; }
     #dpe-pointer {
       position: absolute;
-      bottom: 0;                /* ← ajouté */
-      left: 0; right: 0;
-      height: 4px;
+      top: 0;
+      width: 4px;
+      height: 100%;
       background: #000;
       transition: transform .5s;
     }
-    /* ————————————————————————————————— */
+    /* ———————————————————————————————— */
 
     /* -- DIMENSIONS CARDS -- */
     .dimensions {
@@ -284,16 +284,8 @@
       <div class="group" data-cat="Menuiserie">
         <h3>Menuiserie ALU</h3>
         <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499"></div>
-            <div class="option-label">Noir</div>
-            <div class="option-price">+2 499 €</div>
-          </div>
+          <div class="option"><div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div><div class="option-label">Blanc</div><div class="option-price">+0 €</div></div>
+          <div class="option"><div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499"></div><div class="option-label">Noir</div><div class="option-price">+2 499 €</div></div>
         </div>
       </div>
 
@@ -301,11 +293,7 @@
       <div class="group" data-cat="Gouttiere">
         <h3>Gouttière et descente</h3>
         <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
+          <div class="option"><div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div><div class="option-label">Blanc</div><div class="option-price">+0 €</div></div>
         </div>
       </div>
 
@@ -313,16 +301,8 @@
       <div class="group" data-cat="Pergola">
         <h3>Pergola bioclimatique</h3>
         <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+8 500 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500"></div>
-            <div class="option-label">Noir</div>
-            <div class="option-price">+9 500 €</div>
-          </div>
+          <div class="option"><div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div><div class="option-label">Blanc</div><div class="option-price">+8 500 €</div></div>
+          <div class="option"><div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500"></div><div class="option-label">Noir</div><div class="option-price">+9 500 €</div></div>
         </div>
       </div>
 
@@ -330,21 +310,9 @@
       <div class="group" data-cat="Murs">
         <h3>Peinture (mur extérieur)</h3>
         <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
-            <div class="option-label">Beige WES</div>
-            <div class="option-price">+999 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
-            <div class="option-label">Ocre Mojave</div>
-            <div class="option-price">+1 499 €</div>
-          </div>
+          <div class="option"><div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div><div class="option-label">Blanc</div><div class="option-price">+0 €</div></div>
+          <div class="option"><div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div><div class="option-label">Beige WES</div><div class="option-price">+999 €</div></div>
+          <div class="option"><div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div><div class="option-label">Ocre Mojave</div><div class="option-price">+1 499 €</div></div>
         </div>
       </div>
 
@@ -352,21 +320,9 @@
       <div class="group" data-cat="Toit">
         <h3>Tôle ondulée</h3>
         <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
-            <div class="option-label">Bleu Ardoise</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#A6A6A6" data-color="#A6A6A6" data-cost="0"></div>
-            <div class="option-label">Gris Acier</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800"></div>
-            <div class="option-label">Rouge Hibiscus</div>
-            <div class="option-price">+1 800 €</div>
-          </div>
+          <div class="option"><div class="swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div><div class="option-label">Bleu Ardoise</div><div class="option-price">+0 €</div></div>
+          <div class="option"><div class="swatch" style="background-color:#A6A6A6" data-color="#A6A6A6" data-cost="0"></div><div class="option-label">Gris Acier</div><div class="option-price">+0 €</div></div>
+          <div class="option"><div class="swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800"></div><div class="option-label">Rouge Hibiscus</div><div class="option-price">+1 800 €</div></div>
         </div>
       </div>
 
@@ -388,7 +344,6 @@
 
   <script>
     // --------------------------------------------------
-    // Impact énergétique annoncé en kWh/an
     const energyImpact = {
       Toit: {
         '#1A2E3F': 3000,
@@ -469,14 +424,13 @@
         energyEl.textContent = sum.toLocaleString('fr-FR') + ' kWh/an';
         classEl.textContent  = getEnergyClass(sum);
 
-        // ——— mise à jour de la jauge DPE ———
+        // mise à jour de la jauge DPE horizontale
         const gauge   = document.getElementById('dpe-gauge');
         const pointer = document.getElementById('dpe-pointer');
-        const step    = gauge.clientHeight / 8;
+        const stepX   = gauge.clientWidth / 8;
         const mapPos  = { 'A+':7,'A':6,'B':5,'C':4,'D':3,'E':2,'F':1,'G':0 };
         const idx     = mapPos[getEnergyClass(sum)] || 0;
-        pointer.style.transform = `translateY(-${step * idx}px)`;  /* ← modifié */
-        // ————————————————————————————————
+        pointer.style.transform = `translateX(${stepX * idx}px)`;
 
         barFill.style.width = Math.min(100, Math.round(sum/4000*100)) + '%';
 
@@ -522,3 +476,4 @@
 
 </body>
 </html>
+
