@@ -35,12 +35,17 @@
     }
 
     /* ——— Nouveau : panneau énergie ——— */
-    #energy-summary {
-      background:#fff;
-      border-radius:6px;
-      padding:1rem;
-      margin:1rem;
-      box-shadow:0 1px 4px rgba(0,0,0,0.05);
+    <!-- panneau énergie -->
+<div id="energy-summary">
+  <h3>Performance énergétique estimée</h3>
+  <div class="energy-line"><span>Consommation :</span><span id="energy-value">0 kWh/an</span></div>
+  <div class="energy-line"><span>Classe :</span><span id="energy-class">–</span></div>
+  <div class="energy-bar"><div id="energy-bar-fill"></div></div>
+  <!-- ← Détail poste par poste -->
+  <h4 style="margin-top:1rem; font-size:0.9rem; color:#555">Détail par poste</h4>
+  <div id="energy-details" style="font-size:0.85rem; color:#444; line-height:1.4;"></div>
+</div>
+
     }
     #energy-summary h3 {
       margin-bottom:.75rem;
