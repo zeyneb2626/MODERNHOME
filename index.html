@@ -401,9 +401,9 @@
       function hex2rgba(h){
         const v = parseInt(h.slice(1),16);
         return [
-          (v >> 16 & 255)/255,
-          (v >> 8 & 255)/255,
-          (v & 255)/255,
+          (v >> 16 & 255) / 255,
+          (v >> 8  & 255) / 255,
+          (v       & 255) / 255,
           1
         ];
       }
@@ -419,7 +419,6 @@
           const imp = (energyImpact[cat] && energyImpact[cat][col]!=null)
                     ? energyImpact[cat][col] : 0;
           sum += imp;
-          // **PRÉFIXE LE CATÉGORIE** devant le libellé couleur
           const label = sw.nextElementSibling.textContent;
           lines.push(`${cat} – ${label} : ${imp>0? '+'+imp: imp} kWh/an`);
         });
@@ -480,4 +479,3 @@
 
 </body>
 </html>
-
