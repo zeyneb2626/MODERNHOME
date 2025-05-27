@@ -201,9 +201,9 @@
         exposure="0.6"
         shadow-intensity="2.5"
         shadow-softness="1"
-         camera-controls
-         min-camera-orbit="0deg   0deg   auto"
-  max-camera-orbit="360deg 90deg  auto">
+        camera-controls
+        min-camera-orbit="0deg   0deg   auto"
+        max-camera-orbit="360deg 90deg  auto">
       </model-viewer>
 
       <!-- panneau énergie (ajouté) -->
@@ -401,9 +401,9 @@
       function hex2rgba(h){
         const v = parseInt(h.slice(1),16);
         return [
-          (v >> 16 & 255) / 255,
-          (v >> 8  & 255) / 255,
-          (v       & 255) / 255,
+          (v >> 16 & 255)/255,
+          (v >> 8 & 255)/255,
+          (v & 255)/255,
           1
         ];
       }
@@ -419,8 +419,9 @@
           const imp = (energyImpact[cat] && energyImpact[cat][col]!=null)
                     ? energyImpact[cat][col] : 0;
           sum += imp;
+          // **PRÉFIXE LE CATÉGORIE** devant le libellé couleur
           const label = sw.nextElementSibling.textContent;
-          lines.push(`${label} : ${imp>0? '+'+imp: imp} kWh/an`);
+          lines.push(`${cat} – ${label} : ${imp>0? '+'+imp: imp} kWh/an`);
         });
 
         energyEl.textContent = sum.toLocaleString('fr-FR') + ' kWh/an';
@@ -437,9 +438,8 @@
       mv.addEventListener('load', () => {
         const mats = mv.model.materials;
 
-        // clic sur swatch
         document.querySelectorAll('.group').forEach(group => {
-          const cat   = group.dataset.cat;
+          const cat   = group.dataset-cat || group.dataset.cat;
           const frags = targets[cat] || [];
           group.querySelectorAll('.swatch').forEach(sw => {
             sw.addEventListener('click', () => {
@@ -447,7 +447,7 @@
               sw.classList.add('selected');
 
               // prix
-              selection[cat] = +sw.dataset.cost;
+              selection[cat] = +sw.dataset-cost || +sw.dataset.cost;
               const totOpts = Object.values(selection).reduce((a,b)=>a+b,0);
               optEl.textContent   = totOpts.toLocaleString('fr-FR') + ' €';
               totalEl.textContent = (basePrice + totOpts).toLocaleString('fr-FR') + ' €';
@@ -456,24 +456,23 @@
               const rgba = hex2rgba(sw.dataset.color);
               mats.forEach(m => {
                 const n = m.name.toLowerCase();
-                if (frags.some(f=>n.includes(f))) {
+                if (frags.some(f=> n.includes(f))) {
                   m.pbrMetallicRoughness.setBaseColorFactor(rgba);
                   m.pbrMetallicRoughness.setMetallicFactor(1);
                   m.pbrMetallicRoughness.setRoughnessFactor(1);
                 }
               });
 
-              // maj énergie
+              // mise à jour énergie
               updateEnergy();
             });
           });
-
-          // appli initiale
+          // initialiser
           const first = group.querySelector('.swatch');
           if (first) first.click();
         });
 
-        // 1ère mesure
+        // premier calcul
         updateEnergy();
       });
     });
