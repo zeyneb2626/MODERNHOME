@@ -201,7 +201,7 @@
         exposure="0.6"
         shadow-intensity="2.5"
         shadow-softness="1"
-         camera-controls
+        camera-controls>
          min-camera-orbit="0deg   0deg   auto"
   max-camera-orbit="360deg 90deg  auto">
       </model-viewer>
@@ -413,14 +413,14 @@
         const lines = [];
 
         Object.entries(selection).forEach(([cat]) => {
-          const sw = document.querySelector(.group[data-cat="${cat}"] .swatch.selected);
+          const sw = document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
           if (!sw) return;
           const col = sw.dataset.color;
           const imp = (energyImpact[cat] && energyImpact[cat][col]!=null)
                     ? energyImpact[cat][col] : 0;
           sum += imp;
           const label = sw.nextElementSibling.textContent;
-          lines.push(${label} : ${imp>0? '+'+imp: imp} kWh/an);
+          lines.push(`${label} : ${imp>0? '+'+imp: imp} kWh/an`);
         });
 
         energyEl.textContent = sum.toLocaleString('fr-FR') + ' kWh/an';
@@ -430,8 +430,8 @@
 
         document.getElementById('energy-details').innerHTML =
           lines.length
-            ? lines.map(l=><div>• ${l}</div>).join('')
-            : <i>Aucun matériau sélectionné</i>;
+            ? lines.map(l=>`<div>• ${l}</div>`).join('')
+            : `<i>Aucun matériau sélectionné</i>`;
       }
 
       mv.addEventListener('load', () => {
