@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Configuration Modern’home</title>
+  <script type="module"
+          src="https://unpkg.com/@google/model-viewer@1.12.0/dist/model-viewer.min.js">
+  </script>
+  <style>
+    /* — tu peux reprendre exactement tout ton style existant — */
+    * { box-sizing:border-box; margin:0; padding:0 }
+    html, body { height:100%; font-family:sans-serif; background:#f0f2f5 }
+    #configurator { display:grid; grid-template-columns:2fr 1fr; height:100vh; gap:1rem; padding:1rem }
+    .viewer-card { background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); overflow:hidden; display:flex; flex-direction:column }
+    model-viewer { flex:1; width:100%; height:100%; background:#fafafa }
+    .dimensions { display:grid; grid-template-columns:repeat(3,1fr); background:#fff; padding:1rem; border-top:1px solid #eee; border-radius:0 0 8px 8px; gap:1rem }
+    .dim-card { background:#fff; border:1px solid #eee; border-radius:6px; padding:.75rem; text-align:center; box-shadow:0 1px 4px rgba(0,0,0,0.05) }
+    .dim-card strong { display:block; font-size:1.25rem; color:#222 }
+    .dim-card span   { font-size:.85rem; color:#666 }
+    .controls { background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:1.5rem; overflow-y:auto }
+    .controls h2 { margin-bottom:1rem; color:#222; font-size:1.5rem }
+    .group { margin-bottom:1.5rem }
+    .group h3 { margin-bottom:.5rem; color:#333; font-size:1.1rem }
+    .options { display:flex; gap:.75rem; flex-wrap:wrap }
+    .option { text-align:center; width:70px }
+    .swatch { width:100%; aspect-ratio:1; border:1px solid #ccc; border-radius:4px; cursor:pointer; position:relative; transition:border-color .2s }
+    .swatch:hover       { border-color:#999 }
+    .swatch.selected    { border-color:#006aff }
+    .swatch.selected::after { content:'✔'; position:absolute; top:4px; right:6px; color:#006aff; font-size:1rem }
+    .option-label { margin-top:.3rem; font-size:.75rem; color:#444 }
+    .option-price { font-size:.7rem; color:#666 }
+    #price-summary { background:#fff; border:1px solid #eee; border-radius:6px; padding:1rem; margin:1rem 0; box-shadow:0 1px 4px rgba(0,0,0,0.05) }
+    #price-summary h3 { margin-bottom:.75rem; font-size:1rem; color:#222 }
+    #price-summary .line { display:flex; justify-content:space-between; margin-bottom:.5rem; font-size:.9rem; color:#333 }
+    #price-summary .line.total { font-weight:700; font-size:1.1rem }
+    .action-buttons { display:flex; gap:.75rem }
+    .action-buttons button { flex:1; padding:.75rem; font-size:.95rem; border:none; border-radius:4px; cursor:pointer }
+    .btn-save  { background:#f0f0f0; color:#333 }
+    .btn-quote { background:#006aff; color:#fff }
+    /* — media-queries : même que ton code existant — */
+  </style>
+</head>
+<body>
+
+  <div id="configurator">
+
+    <!-- 3D + dimensions -->
+    <div class="viewer-card">
+      <model-viewer
+        id="mv"
+        src="MODERNHOME2.glb"
+        alt="Maison Modern’home"
+        camera-controls
+        environment-image="road_in_dordogne_1k.hdr"
+        environment-image-rotation="96.73deg"
+        exposure="0.4659"
+        shadow-intensity="1"
+        shadow-softness="0.6">
+      </model-viewer>
+      <div class="dimensions">
+        <div class="dim-card"><strong>85 m²</strong><span>Surface</span></div>
+        <div class="dim-card"><strong>3 Ch</strong><span>Chambres</span></div>
+        <div class="dim-card"><strong>2 SdE</strong><span>Salles d'eau</span></div>
+      </div>
+    </div>
+
+    <!-- Contrôles couleur -->
+    <div class="controls">
+      <h2>Configuration Modern’home</h2>
+
+      <!-- Menuiserie ALU -->
+      <div class="group" data-cat="Menuiserie">
+        <h3>Menuiserie ALU</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499"></div>
+            <div class="option-label">Noir</div>
+            <div class="option-price">+2 499 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gouttière et descente -->
+      <div class="group" data-cat="Gouttiere">
+        <h3>Gouttière et descente</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pergola bioclimatique -->
+      <div class="group" data-cat="Pergola">
+        <h3>Pergola bioclimatique</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+8 500 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500"></div>
+            <div class="option-label">Noir</div>
+            <div class="option-price">+9 500 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peinture (mur extérieur) -->
+      <div class="group" data-cat="Murs">
+        <h3>Peinture (mur extérieur)</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#CCC0AF" data-color="#CCC0AF" data-cost="399"></div>
+            <div class="option-label">Beige WES</div>
+            <div class="option-price">+399 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
+            <div class="option-label">Ocre Mojave</div>
+            <div class="option-price">+1 499 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tôle ondulée -->
+      <div class="group" data-cat="Toit">
+        <h3>Tôle ondulée</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#133654" data-color="#133654" data-cost="0"></div>
+            <div class="option-label">Bleu Ardoise</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#A6A6A6" data-color="#A6A6A6" data-cost="0"></div>
+            <div class="option-label">Gris Acier</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#CC3333" data-color="#CC3333" data-cost="1800"></div>
+            <div class="option-label">Rouge Hibiscus</div>
+            <div class="option-price">+1 800 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Récap de prix -->
+      <div id="price-summary">
+        <h3>Récapitulatif de prix</h3>
+        <div class="line"><span>Prix de base :</span><span id="base-price">170 000 €</span></div>
+        <div class="line"><span>Vos options :</span><span id="opt-price">0 €</span></div>
+        <div class="line total"><span>Total TTC :</span><span id="total-price">170 000 €</span></div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-save">Enregistrer</button>
+        <button class="btn-quote">Demander un devis</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const mv        = document.getElementById('mv');
+    const basePrice = 170000;
+    const optEl     = document.getElementById('opt-price');
+    const totalEl   = document.getElementById('total-price');
+    let   selection = {};
+
+    // CIBLAGE des matériaux par catégorie
+    const targets = {
+      Menuiserie: ['menuiserie1','menuiserie2'],
+      Gouttiere:  [],                   // pas de mat dédié → reste blanc
+      Pergola:    ['material17'],       // <-- remplace par ton vrai mat si besoin
+      Murs:       ['murs'],
+      Toit:       ['toit']
+    };
+
+    function hex2rgba(h){
+      const v = parseInt(h.slice(1),16);
+      return [(v>>16&255)/255,(v>>8&255)/255,(v&255)/255,1];
+    }
+
+    mv.addEventListener('load', () => {
+      const mats = mv.model.materials;
+
+      // Sélectionne la 1ʳᵉ option de chaque groupe au chargement
+      document.querySelectorAll('.group').forEach(g => {
+        const first = g.querySelector('.swatch');
+        if (first) first.click();
+      });
+
+      // Au clic sur une swatch…
+      document.querySelectorAll('.swatch').forEach(sw => {
+        sw.addEventListener('click', () => {
+          const group = sw.closest('.group');
+          const cat   = group.dataset.cat;
+          const color = sw.dataset.color;
+          const cost  = +sw.dataset.cost;
+
+          // Highlight
+          group.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+          sw.classList.add('selected');
+
+          // Mise à jour prix
+          selection[cat] = cost;
+          const sumOpt = Object.values(selection).reduce((a,b)=>a+b,0);
+          optEl.textContent   = sumOpt.toLocaleString('fr-FR') + ' €';
+          totalEl.textContent = (basePrice+sumOpt).toLocaleString('fr-FR') + ' €';
+
+          // Recoloration
+          const rgba = hex2rgba(color);
+          mats.forEach(m => {
+            const name = m.name.toLowerCase();
+            if ( targets[cat].some(frag => name.includes(frag)) ){
+              m.pbrMetallicRoughness.setBaseColorFactor(rgba);
+              m.pbrMetallicRoughness.setMetallicFactor(1);
+              m.pbrMetallicRoughness.setRoughnessFactor(1);
+            }
+          });
+        });
+      });
+    });
+  });
+  </script>
+</body>
+</html>
