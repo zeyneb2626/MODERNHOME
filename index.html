@@ -202,8 +202,8 @@
         shadow-intensity="2.5"
         shadow-softness="1"
         camera-controls
-         min-camera-orbit="0deg   0deg   auto"
-  max-camera-orbit="360deg 90deg  auto">
+        min-camera-orbit="0deg   0deg   auto"
+        max-camera-orbit="360deg 90deg  auto">
       </model-viewer>
 
       <!-- panneau énergie (ajouté) -->
@@ -419,9 +419,9 @@
           const imp = (energyImpact[cat] && energyImpact[cat][col]!=null)
                     ? energyImpact[cat][col] : 0;
           sum += imp;
-         const label = sw.nextElementSibling.textContent;
-// on ajoute la catégorie devant le libellé couleur
-lines.push(`${cat} – ${label} : ${imp>0? '+'+imp: imp} kWh/an`);
+          const label = sw.nextElementSibling.textContent;
+          // **Ligne modifiée : on préfixe par la catégorie**
+          lines.push(`${cat} – ${label} : ${imp>0? '+'+imp: imp} kWh/an`);
         });
 
         energyEl.textContent = sum.toLocaleString('fr-FR') + ' kWh/an';
