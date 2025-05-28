@@ -25,9 +25,9 @@
       overflow:hidden;
     }
     model-viewer {
-      flex:2;
+      flex:2;                   /* modèle plus grand */
       width:100%; height:100%;
-      background:#dddddd;
+      background:#dddddd;       /* fond plus gris */
     }
 
     /* === Panneau ÉNERGIE === */
@@ -38,11 +38,11 @@
     #energy-summary h3 {
       font-size:1rem; color:#222; margin-bottom:.5rem;
     }
-    /* SVG DPE maison */
+    /* SVG DPE maison + flèches */
     #dpe-svg {
       display:block;
       margin:0 auto 1rem;
-      width:200px; height:auto;
+      width:200px; height:120px;
     }
     .dpe-arrow {
       opacity:.2;
@@ -69,28 +69,37 @@
     /* ============================== */
 
     /* -- DIMENSIONS CARDS -- */
-    .dimensions { display:grid; grid-template-columns:repeat(3,1fr);
-      background:#fff; padding:1rem; border-top:1px solid #eee;
-      border-radius:0 0 8px 8px; gap:1rem;
+    .dimensions {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      background:#fff; padding:1rem;
+      border-top:1px solid #eee; border-radius:0 0 8px 8px;
+      gap:1rem;
     }
-    .dim-card { background:#fff; border:1px solid #eee;
+    .dim-card {
+      background:#fff; border:1px solid #eee;
       border-radius:6px; padding:.75rem; text-align:center;
       box-shadow:0 1px 4px rgba(0,0,0,0.05);
     }
     .dim-card strong { display:block; font-size:1.25rem; color:#222 }
-    .dim-card span { font-size:.85rem; color:#666 }
+    .dim-card span   { font-size:.85rem; color:#666 }
 
     /* -- CONTROLS & SWATCHES -- */
-    .controls { background:#fff; border-radius:8px;
+    .controls {
+      background:#fff; border-radius:8px;
       box-shadow:0 2px 8px rgba(0,0,0,0.1);
       padding:1.5rem; overflow-y:auto;
     }
-    .controls h2 { font-size:1.5rem; color:#222; margin-bottom:1rem }
-    .group { margin-bottom:1.5rem }
-    .group h3 { font-size:1.1rem; color:#333; margin-bottom:.5rem }
-    .options { display:flex; gap:.75rem; flex-wrap:wrap }
-    .option { text-align:center; width:70px }
-    .swatch { width:100%; aspect-ratio:1; border:1px solid #ccc;
+    .controls h2 {
+      font-size:1.5rem; color:#222; margin-bottom:1rem;
+    }
+    .group { margin-bottom:1.5rem; }
+    .group h3 {
+      font-size:1.1rem; color:#333; margin-bottom:.5rem;
+    }
+    .options { display:flex; gap:.75rem; flex-wrap:wrap; }
+    .option { text-align:center; width:70px; }
+    .swatch {
+      width:100%; aspect-ratio:1; border:1px solid #ccc;
       border-radius:4px; cursor:pointer; position:relative;
       transition:border-color .2s;
     }
@@ -100,42 +109,48 @@
       content:'✔'; position:absolute; top:4px; right:6px;
       color:#006aff; font-size:1rem;
     }
-    .option-label { font-size:.75rem; color:#444; margin-top:.3rem }
-    .option-price { font-size:.7rem; color:#666 }
+    .option-label { font-size:.75rem; color:#444; margin-top:.3rem; }
+    .option-price { font-size:.7rem; color:#666; }
 
     /* -- PRICE SUMMARY -- */
-    #price-summary { background:#fff; border:1px solid #eee;
+    #price-summary {
+      background:#fff; border:1px solid #eee;
       border-radius:6px; padding:1rem; margin:1rem 0;
       box-shadow:0 1px 4px rgba(0,0,0,0.05);
     }
-    #price-summary h3 { font-size:1rem; color:#222; margin-bottom:.75rem }
-    #price-summary .line { display:flex; justify-content:space-between;
+    #price-summary h3 {
+      font-size:1rem; color:#222; margin-bottom:.75rem;
+    }
+    #price-summary .line {
+      display:flex; justify-content:space-between;
       margin-bottom:.5rem; font-size:.9rem; color:#333;
     }
-    #price-summary .line.total { font-weight:700; font-size:1.1rem; }
+    #price-summary .line.total {
+      font-weight:700; font-size:1.1rem;
+    }
 
-    .action-buttons { display:flex; gap:.75rem }
-    .action-buttons button { flex:1; padding:.75rem; font-size:.95rem;
+    .action-buttons { display:flex; gap:.75rem; }
+    .action-buttons button {
+      flex:1; padding:.75rem; font-size:.95rem;
       border:none; border-radius:4px; cursor:pointer;
     }
     .btn-save { background:#f0f0f0; color:#333 }
-    .btn-quote { background:#006aff; color:#fff }
+    .btn-quote{ background:#006aff; color:#fff }
 
     @media (max-width:1024px){
       #configurator { grid-template-columns:1fr }
-      .viewer-card { height:auto }
       model-viewer { height:50vh!important; min-height:300px }
     }
     @media (max-width:600px){
       model-viewer { height:40vh!important; min-height:200px }
       .dimensions { grid-template-columns:1fr }
     }
+
   </style>
 </head>
 <body>
 
   <div id="configurator">
-
     <!-- 3D VIEWER + ÉNERGIE + dimensions -->
     <div class="viewer-card">
       <model-viewer
@@ -154,18 +169,43 @@
         <h3>Performance énergétique estimée</h3>
 
         <!-- SVG “maison + flèches A+→G” -->
-        <svg id="dpe-svg" viewBox="0 0 100 100">
-          <!-- silhouette maison -->
-          <path d="M10,60 L10,90 L90,90 L90,60 L50,30 Z" fill="#ccc"/>
-          <!-- flèches  A+ → G -->
-          <polygon id="arrow-Aplus" class="dpe-arrow" points="50,30 70,30 65,25 65,35" fill="#006400"/>
-          <polygon id="arrow-A"     class="dpe-arrow" points="50,40 70,40 65,35 65,45" fill="#2e7d32"/>
-          <polygon id="arrow-B"     class="dpe-arrow" points="50,50 70,50 65,45 65,55" fill="#558b2f"/>
-          <polygon id="arrow-C"     class="dpe-arrow" points="50,60 70,60 65,55 65,65" fill="#9ccc65"/>
-          <polygon id="arrow-D"     class="dpe-arrow" points="50,70 70,70 65,65 65,75" fill="#ffeb3b"/>
-          <polygon id="arrow-E"     class="dpe-arrow" points="50,80 70,80 65,75 65,85" fill="#ffb300"/>
-          <polygon id="arrow-F"     class="dpe-arrow" points="50,90 70,90 65,85 65,95" fill="#f4511e"/>
-          <polygon id="arrow-G"     class="dpe-arrow" points="50,100 70,100 65,95 65,105" fill="#d32f2f"/>
+        <svg id="dpe-svg" viewBox="0 0 200 120">
+          <!-- silhouette de la maison -->
+          <path d="M10,100 L10,50 L50,50 L90,10 L130,50 L170,50 L170,100 Z" fill="#C19A6B"/>
+
+          <!-- flèches  -->
+          <g id="arrow-Aplus" class="dpe-arrow">
+            <polygon points="100,10 170,10 180,15 170,20 100,20 105,15" fill="#006400"/>
+            <text x="110" y="18" font-size="8" fill="#fff">A+</text>
+          </g>
+          <g id="arrow-A" class="dpe-arrow">
+            <polygon points="100,22 170,22 180,27 170,32 100,32 105,27" fill="#2e7d32"/>
+            <text x="113" y="30" font-size="8" fill="#fff">A</text>
+          </g>
+          <g id="arrow-B" class="dpe-arrow">
+            <polygon points="100,34 170,34 180,39 170,44 100,44 105,39" fill="#558b2f"/>
+            <text x="113" y="42" font-size="8" fill="#fff">B</text>
+          </g>
+          <g id="arrow-C" class="dpe-arrow">
+            <polygon points="100,46 170,46 180,51 170,56 100,56 105,51" fill="#9ccc65"/>
+            <text x="113" y="54" font-size="8" fill="#000">C</text>
+          </g>
+          <g id="arrow-D" class="dpe-arrow">
+            <polygon points="100,58 170,58 180,63 170,68 100,68 105,63" fill="#ffeb3b"/>
+            <text x="113" y="66" font-size="8" fill="#000">D</text>
+          </g>
+          <g id="arrow-E" class="dpe-arrow">
+            <polygon points="100,70 170,70 180,75 170,80 100,80 105,75" fill="#ffb300"/>
+            <text x="113" y="78" font-size="8" fill="#000">E</text>
+          </g>
+          <g id="arrow-F" class="dpe-arrow">
+            <polygon points="100,82 170,82 180,87 170,92 100,92 105,87" fill="#f4511e"/>
+            <text x="113" y="90" font-size="8" fill="#fff">F</text>
+          </g>
+          <g id="arrow-G" class="dpe-arrow">
+            <polygon points="100,94 170,94 180,99 170,104 100,104 105,99" fill="#d32f2f"/>
+            <text x="113" y="102" font-size="8" fill="#fff">G</text>
+          </g>
         </svg>
 
         <div class="energy-line">
@@ -293,13 +333,12 @@
         <div class="line total"><span>Total TTC :</span><span id="total-price">170 000 €</span></div>
       </div>
 
-      <!-- Boutons -->
+      <!-- Boutons d’action -->
       <div class="action-buttons">
         <button class="btn-save">Enregistrer la configuration</button>
         <button class="btn-quote">Demander un devis</button>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -347,35 +386,39 @@
         let sum=0, details=[];
         Object.entries(selection).forEach(([cat])=>{
           const sw = document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
+          if(!sw) return;
           const col=sw.dataset.color;
-          const imp=(energyImpact[cat]&&energyImpact[cat][col]!=null)?energyImpact[cat][col]:0;
+          const imp=(energyImpact[cat]&&energyImpact[cat][col]!=null)
+                    ?energyImpact[cat][col]:0;
           sum+=imp;
           details.push(`• ${cat} – ${sw.nextElementSibling.textContent} : ${imp>0?'+':''}${imp} kWh/an`);
         });
         energyEl.textContent = sum + ' kWh/an';
         const cls = getEnergyClass(sum);
-        classEl.textContent= cls==='Aplus'? 'A+' : cls;
+        classEl.textContent = (cls==='Aplus'?'A+':cls);
         barFill.style.width = Math.min(100,Math.round(sum/4000*100)) + '%';
 
         arrows.forEach(a=>a.classList.remove('active'));
-        document.getElementById('arrow-'+cls).classList.add('active');
+        document.getElementById(`arrow-${cls}`).classList.add('active');
 
-        document.getElementById('energy-details').innerHTML = details.join('<br>') || '<i>Aucun matériau sélectionné</i>';
+        document.getElementById('energy-details').innerHTML = details.join('<br>') ||
+          '<i>Aucun matériau sélectionné</i>';
       }
 
       mv.addEventListener('load',()=>{
         const mats = mv.model.materials;
         document.querySelectorAll('.group').forEach(group=>{
-          const cat = group.dataset.cat, frags = targets[cat]||[];
+          const cat=group.dataset.cat, frags=targets[cat]||[];
           group.querySelectorAll('.swatch').forEach(sw=>{
             sw.addEventListener('click',()=>{
-              group.querySelectorAll('.swatch').forEach(x=>x.classList.remove('selected'));
+              group.querySelectorAll('.swatch')
+                   .forEach(x=>x.classList.remove('selected'));
               sw.classList.add('selected');
               selection[cat] = +sw.dataset.cost;
               const tot = Object.values(selection).reduce((a,b)=>a+b,0);
-              optEl.textContent = tot.toLocaleString('fr-FR') + ' €';
-              totalEl.textContent = (170000 + tot).toLocaleString('fr-FR') + ' €';
-              const rgba = hex2rgba(sw.dataset.color);
+              optEl.textContent   = tot.toLocaleString('fr-FR')+' €';
+              totalEl.textContent = (170000+tot).toLocaleString('fr-FR')+' €';
+              const rgba=hex2rgba(sw.dataset.color);
               mats.forEach(m=>{
                 if(frags.some(f=>m.name.toLowerCase().includes(f))){
                   m.pbrMetallicRoughness.setBaseColorFactor(rgba);
