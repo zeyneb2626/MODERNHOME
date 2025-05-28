@@ -418,7 +418,8 @@
       function updateEnergy(){
         let sum=0, lines=[];
         Object.entries(selection).forEach(([cat])=>{
-          const sw=document.querySelector(.group[data-cat="${cat}"] .swatch.selected);
+          const sw=document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
+
           if(!sw)return;
           const col=sw.dataset.color, imp=energyImpact[cat][col]||0;
           sum+=imp;
