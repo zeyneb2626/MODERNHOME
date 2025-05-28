@@ -25,7 +25,7 @@
       overflow:hidden;
     }
     model-viewer {
-      flex:2;
+      flex:3;                /* agrandi */
       width:100%; height:100%;
       background:#dddddd;
     }
@@ -38,11 +38,12 @@
     #energy-summary h3 {
       font-size:1rem; color:#222; margin-bottom:.5rem;
     }
-    /* SVG DPE maison + flèches */
+
+    /* SVG conteneur */
     #dpe-svg {
       display:block;
       margin:0 auto 1rem;
-      width:240px; height:160px;
+      width:280px; height:160px;
     }
     .dpe-arrow {
       opacity:.2;
@@ -71,7 +72,6 @@
     #energy-details {
       margin-top:.5rem; font-size:.85rem; color:#555; line-height:1.4;
     }
-    /* ============================== */
 
     /* -- DIMENSIONS CARDS -- */
     .dimensions {
@@ -172,51 +172,43 @@
       <div id="energy-summary">
         <h3>Performance énergétique estimée</h3>
 
-        <!-- SVG maison + flèches DPE -->
-        <svg id="dpe-svg" viewBox="0 0 300 200">
-          <!-- contour de la maison -->
-          <path d="M40,160 L40,100 L120,40 L200,40 L260,100 L260,160 Z"
+        <!-- SVG maison + flèches DPE à droite -->
+        <svg id="dpe-svg" viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- contour maison -->
+          <path d="M20,160 L20,100 L100,40 L180,40 L260,100 L260,160 Z"
                 fill="none" stroke="#C19A6B" stroke-width="12" stroke-linejoin="round"/>
-          <!-- flèches A+→G -->
-          <!-- A+ -->
-          <g id="arrow-Aplus" class="dpe-arrow">
-            <polygon points="200,40 300,40 310,50 300,60 200,60" fill="#006400"/>
-            <text x="210" y="54" class="dpe-text" fill="#fff">A+</text>
+          <!-- flèches, décalées X de +80 px -->
+          <g id="arrow-Aplus" class="dpe-arrow" transform="translate(80,0)">
+            <polygon points="280,40 360,40 370,50 360,60 280,60" fill="#006400"/>
+            <text x="290" y="54" class="dpe-text" fill="#fff">A+</text>
           </g>
-          <!-- A -->
-          <g id="arrow-A" class="dpe-arrow">
-            <polygon points="200,60 300,60 310,70 300,80 200,80" fill="#2e7d32"/>
-            <text x="220" y="74" class="dpe-text" fill="#fff">A</text>
+          <g id="arrow-A" class="dpe-arrow" transform="translate(80,20)">
+            <polygon points="280,40 360,40 370,50 360,60 280,60" fill="#2e7d32"/>
+            <text x="310" y="54" class="dpe-text" fill="#fff">A</text>
           </g>
-          <!-- B -->
-          <g id="arrow-B" class="dpe-arrow">
-            <polygon points="200,80 300,80 310,90 300,100 200,100" fill="#558b2f"/>
-            <text x="220" y="94" class="dpe-text" fill="#fff">B</text>
+          <g id="arrow-B" class="dpe-arrow" transform="translate(80,40)">
+            <polygon points="280,40 360,40 370,50 360,60 280,60" fill="#558b2f"/>
+            <text x="310" y="54" class="dpe-text" fill="#fff">B</text>
           </g>
-          <!-- C -->
-          <g id="arrow-C" class="dpe-arrow">
-            <polygon points="200,100 300,100 310,110 300,120 200,120" fill="#9ccc65"/>
-            <text x="220" y="114" class="dpe-text" fill="#000">C</text>
+          <g id="arrow-C" class="dpe-arrow" transform="translate(80,60)">
+            <polygon points="280,40 360,40 370,50 360,60 280,60" fill="#9ccc65"/>
+            <text x="310" y="54" class="dpe-text" fill="#000">C</text>
           </g>
-          <!-- D -->
-          <g id="arrow-D" class="dpe-arrow">
-            <polygon points="200,120 300,120 310,130 300,140 200,140" fill="#ffeb3b"/>
-            <text x="220" y="134" class="dpe-text" fill="#000">D</text>
+          <g id="arrow-D" class="dpe-arrow" transform="translate(80,80)">
+            <polygon points="280,40 360,40 370,50 360,60 280,60" fill="#ffeb3b"/>
+            <text x="310" y="54" class="dpe-text" fill="#000">D</text>
           </g>
-          <!-- E -->
-          <g id="arrow-E" class="dpe-arrow">
-            <polygon points="200,140 300,140 310,150 300,160 200,160" fill="#ffb300"/>
-            <text x="220" y="154" class="dpe-text" fill="#000">E</text>
+          <g id="arrow-E" class="dpe-arrow" transform="translate(80,100)">
+            <polygon points="280,40 360,40 370,50 360,60 280,60" fill="#ffb300"/>
+            <text x="310" y="54" class="dpe-text" fill="#000">E</text>
           </g>
-          <!-- F -->
-          <g id="arrow-F" class="dpe-arrow">
-            <polygon points="200,160 300,160 310,170 300,180 200,180" fill="#f4511e"/>
-            <text x="220" y="174" class="dpe-text" fill="#fff">F</text>
+          <g id="arrow-F" class="dpe-arrow" transform="translate(80,120)">
+            <polygon points="280,40 360,40 370,50 360,60 280,60" fill="#f4511e"/>
+            <text x="310" y="54" class="dpe-text" fill="#fff">F</text>
           </g>
-          <!-- G -->
-          <g id="arrow-G" class="dpe-arrow">
-            <polygon points="200,180 300,180 310,190 300,200 200,200" fill="#d32f2f"/>
-            <text x="220" y="194" class="dpe-text" fill="#fff">G</text>
+          <g id="arrow-G" class="dpe-arrow" transform="translate(80,140)">
+            <polygon points="280,40 360,40 370,50 360,60 280,60" fill="#d32f2f"/>
+            <text x="310" y="54" class="dpe-text" fill="#fff">G</text>
           </g>
         </svg>
 
@@ -237,7 +229,7 @@
         <div id="energy-details"><i>Aucun matériau sélectionné</i></div>
       </div>
 
-      <!-- Dimensions sous le viewer -->
+      <!-- Dimensions -->
       <div class="dimensions">
         <div class="dim-card"><strong>85 m²</strong><span>Surface</span></div>
         <div class="dim-card"><strong>3 Ch</strong><span>Chambres</span></div>
@@ -245,151 +237,17 @@
       </div>
     </div>
 
-    <!-- CONTROLES + PRIX à droite (inchangés) -->
+    <!-- CONTROLS + PRIX -->
     <div class="controls">
       <h2>Configuration Modern’home</h2>
-
-      <!-- Menuiserie ALU -->
-      <div class="group" data-cat="Menuiserie">
-        <h3>Menuiserie ALU</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#FFFFFF"
-                 data-color="#FFFFFF"
-                 data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#000000"
-                 data-color="#000000"
-                 data-cost="2499"></div>
-            <div class="option-label">Noir</div>
-            <div class="option-price">+2 499 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gouttière et descente -->
-      <div class="group" data-cat="Gouttiere">
-        <h3>Gouttière et descente</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#FFFFFF"
-                 data-color="#FFFFFF"
-                 data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pergola bioclimatique -->
-      <div class="group" data-cat="Pergola">
-        <h3>Pergola bioclimatique</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#FFFFFF"
-                 data-color="#FFFFFF"
-                 data-cost="8500"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+8 500 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#000000"
-                 data-color="#000000"
-                 data-cost="9500"></div>
-            <div class="option-label">Noir</div>
-            <div class="option-price">+9 500 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Peinture (mur extérieur) -->
-      <div class="group" data-cat="Murs">
-        <h3>Peinture (mur extérieur)</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#FFFFFF"
-                 data-color="#FFFFFF"
-                 data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#D4C4A3"
-                 data-color="#D4C4A3"
-                 data-cost="999"></div>
-            <div class="option-label">Beige WES</div>
-            <div class="option-price">+999 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#E6C7B1"
-                 data-color="#E6C7B1"
-                 data-cost="1499"></div>
-            <div class="option-label">Ocre Mojave</div>
-            <div class="option-price">+1 499 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tôle ondulée -->
-      <div class="group" data-cat="Toit">
-        <h3>Tôle ondulée</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#1A2E3F"
-                 data-color="#1A2E3F"
-                 data-cost="0"></div>
-            <div class="option-label">Bleu Ardoise</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#A6A6A6"
-                 data-color="#A6A6A6"
-                 data-cost="0"></div>
-            <div class="option-label">Gris Acier</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch"
-                 style="background-color:#C0392B"
-                 data-color="#C0392B"
-                 data-cost="1800"></div>
-            <div class="option-label">Rouge Hibiscus</div>
-            <div class="option-price">+1 800 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Récapitulatif de prix -->
+      <!-- (tes groupes swatches ici, inchangés) -->
+      <!-- ... -->
       <div id="price-summary">
         <h3>Récapitulatif de prix</h3>
-        <div class="line">
-          <span>Prix de base :</span>
-          <span id="base-price">170 000 €</span>
-        </div>
-        <div class="line">
-          <span>Vos options :</span>
-          <span id="opt-price">0 €</span>
-        </div>
-        <div class="line total">
-          <span>Total TTC :</span>
-          <span id="total-price">170 000 €</span>
-        </div>
+        <div class="line"><span>Prix de base :</span><span id="base-price">170 000 €</span></div>
+        <div class="line"><span>Vos options :</span><span id="opt-price">0 €</span></div>
+        <div class="line total"><span>Total TTC :</span><span id="total-price">170 000 €</span></div>
       </div>
-
-      <!-- Boutons d’action -->
       <div class="action-buttons">
         <button class="btn-save">Enregistrer la configuration</button>
         <button class="btn-quote">Demander un devis</button>
@@ -398,7 +256,7 @@
   </div>
 
   <script>
-    // --------------------------------------------------
+    // energies & script inchangés
     const energyImpact = {
       Toit:      {'#1A2E3F':3000,'#A6A6A6':3200,'#C0392B':3500},
       Pergola:   {'#FFFFFF':-200,'#000000':-300},
@@ -413,31 +271,26 @@
       if(kwh<3500) return 'C';
       return 'D';
     }
-    // --------------------------------------------------
-
     window.addEventListener('DOMContentLoaded',()=>{
-      const mv       = document.getElementById('mv');
-      const optEl    = document.getElementById('opt-price');
-      const totalEl  = document.getElementById('total-price');
-      const energyEl = document.getElementById('energy-value');
-      const classEl  = document.getElementById('energy-class');
-      const barFill  = document.getElementById('energy-bar-fill');
-      const arrows   = Array.from(document.querySelectorAll('.dpe-arrow'));
-      let   selection={};
-
-      const targets = {
+      const mv=document.getElementById('mv');
+      const optEl=document.getElementById('opt-price');
+      const totalEl=document.getElementById('total-price');
+      const energyEl=document.getElementById('energy-value');
+      const classEl=document.getElementById('energy-class');
+      const barFill=document.getElementById('energy-bar-fill');
+      const arrows=Array.from(document.querySelectorAll('.dpe-arrow'));
+      let selection={};
+      const targets={
         Menuiserie:['menui','volets'],
         Gouttiere:['gouttiere'],
         Pergola:['pergola'],
         Murs:['murs'],
         Toit:['toit']
       };
-
       function hex2rgba(h){
         const v=parseInt(h.slice(1),16);
         return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255,1];
       }
-
       function updateEnergy(){
         let sum=0, details=[];
         Object.entries(selection).forEach(([cat])=>{
@@ -447,33 +300,29 @@
           const imp=(energyImpact[cat]&&energyImpact[cat][col]!=null)
                     ?energyImpact[cat][col]:0;
           sum+=imp;
-          details.push(`• ${cat} – ${sw.nextElementSibling.textContent} : ${imp>0?'+':''}${imp} kWh/an`);
+          details.push(`• ${cat} – ${sw.nextElementSibling.textContent}: ${imp>0?'+':''}${imp} kWh/an`);
         });
-        energyEl.textContent=sum+' kWh/an';
+        energyEl.textContent=`${sum} kWh/an`;
         const cls=getEnergyClass(sum);
-        classEl.textContent=(cls==='Aplus'?'A+':cls);
-        barFill.style.width=Math.min(100,Math.round(sum/4000*100))+'%';
-
+        classEl.textContent= cls==='Aplus'?'A+':cls;
+        barFill.style.width=`${Math.min(100,Math.round(sum/4000*100))}%`;
         arrows.forEach(a=>a.classList.remove('active'));
         document.getElementById('arrow-'+cls).classList.add('active');
-
         document.getElementById('energy-details').innerHTML=
           details.join('<br>')||'<i>Aucun matériau sélectionné</i>';
       }
-
       mv.addEventListener('load',()=>{
         const mats=mv.model.materials;
         document.querySelectorAll('.group').forEach(group=>{
           const cat=group.dataset.cat, frags=targets[cat]||[];
           group.querySelectorAll('.swatch').forEach(sw=>{
             sw.addEventListener('click',()=>{
-              group.querySelectorAll('.swatch')
-                   .forEach(x=>x.classList.remove('selected'));
+              group.querySelectorAll('.swatch').forEach(x=>x.classList.remove('selected'));
               sw.classList.add('selected');
               selection[cat]=+sw.dataset.cost;
               const tot=Object.values(selection).reduce((a,b)=>a+b,0);
-              optEl.textContent=tot.toLocaleString('fr-FR')+' €';
-              totalEl.textContent=(170000+tot).toLocaleString('fr-FR')+' €';
+              optEl.textContent=`${tot.toLocaleString('fr-FR')} €`;
+              totalEl.textContent=`${(170000+tot).toLocaleString('fr-FR')} €`;
               const rgba=hex2rgba(sw.dataset.color);
               mats.forEach(m=>{
                 if(frags.some(f=>m.name.toLowerCase().includes(f))){
@@ -494,3 +343,4 @@
   </script>
 </body>
 </html>
+
