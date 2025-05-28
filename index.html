@@ -130,6 +130,16 @@
     }
     .option-label { margin-top:.3rem; font-size:.75rem; color:#444 }
     .option-price { font-size:.7rem; color:#666 }
+.viewer-card {
+  position: relative;
+  z-index: 1; /* en dessous de .controls */
+}
+
+.controls {
+  position: relative;
+  z-index: 2; /* au dessus du model-viewer */
+  pointer-events: auto; /* s’assure que les clics fonctionnent */
+}
 
     #price-summary {
       background:#fff; border:1px solid #eee;
