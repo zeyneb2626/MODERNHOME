@@ -24,6 +24,9 @@
       display:flex;
       flex-direction:column;
       overflow:hidden;
+      /* Règles ajoutées pour placer le viewer sous les contrôles */
+      position: relative;
+      z-index: 1;
     }
     model-viewer {
       flex:5;                   /* modèle agrandi */
@@ -106,6 +109,10 @@
       background:#fff; border-radius:8px;
       box-shadow:0 2px 8px rgba(0,0,0,0.1);
       padding:1.5rem; overflow-y:auto;
+      /* Règles ajoutées pour s’assurer que les contrôles captent les clics */
+      position: relative;
+      z-index: 2;
+      pointer-events: auto;
     }
     .controls h2 {
       font-size:1.5rem; color:#222; margin-bottom:1rem;
@@ -130,16 +137,6 @@
     }
     .option-label { margin-top:.3rem; font-size:.75rem; color:#444 }
     .option-price { font-size:.7rem; color:#666 }
-.viewer-card {
-  position: relative;
-  z-index: 1; /* en dessous de .controls */
-}
-
-.controls {
-  position: relative;
-  z-index: 2; /* au dessus du model-viewer */
-  pointer-events: auto; /* s’assure que les clics fonctionnent */
-}
 
     #price-summary {
       background:#fff; border:1px solid #eee;
@@ -245,23 +242,11 @@
           </svg>
         </div>
 
-        <div class="energy-line">
-          <span>Consommation :</span>
-          <span id="energy-value">0 kWh/an</span>
-        </div>
-        <div class="energy-line">
-          <span>Classe :</span>
-          <span id="energy-class">–</span>
-        </div>
-        <div class="energy-bar">
-          <div id="energy-bar-fill"></div>
-        </div>
-        <h4 style="margin-top:1rem;font-size:.9rem;color:#555">
-          Détail par matériau
-        </h4>
-        <div id="energy-details">
-          <i>Aucun matériau sélectionné</i>
-        </div>
+        <div class="energy-line"><span>Consommation :</span><span id="energy-value">0 kWh/an</span></div>
+        <div class="energy-line"><span>Classe :</span><span id="energy-class">–</span></div>
+        <div class="energy-bar"><div id="energy-bar-fill"></div></div>
+        <h4 style="margin-top:1rem;font-size:.9rem;color:#555">Détail par matériau</h4>
+        <div id="energy-details"><i>Aucun matériau sélectionné</i></div>
       </div>
 
       <!-- Dimensions -->
@@ -386,7 +371,7 @@
     // --------------------------------------------------
     const energyImpact = {
       Toit:      {'#1A2E3F':3000,'#A6A6A6':3200,'#C0392B':3500},
-      Pergola:   {'#FFFFFF':-200,'#000000':300},   // anthracite → +300
+      Pergola:   {'#FFFFFF':-200,'#000000':300},
       Murs:      {'#FFFFFF':0,'#D4C4A3':100,'#E6C7B1':150},
       Menuiserie:{'#FFFFFF':0,'#000000':50},
       Gouttiere: {'#FFFFFF':0}
@@ -402,15 +387,15 @@
     // --------------------------------------------------
 
     window.addEventListener('DOMContentLoaded',()=>{
-      const mv         = document.getElementById('mv');
-      const optEl      = document.getElementById('opt-price');
-      const totalEl    = document.getElementById('total-price');
-      const energyEl   = document.getElementById('energy-value');
-      const classEl    = document.getElementById('energy-class');
-      const barFill    = document.getElementById('energy-bar-fill');
-      const arrows     = Array.from(document.querySelectorAll('.dpe-arrow'));
-      const basePrice  = 170000;
-      let   selection  = {};
+      const mv        = document.getElementById('mv');
+      const optEl     = document.getElementById('opt-price');
+      const totalEl   = document.getElementById('total-price');
+      const energyEl  = document.getElementById('energy-value');
+      const classEl   = document.getElementById('energy-class');
+      const barFill   = document.getElementById('energy-bar-fill');
+      const arrows    = Array.from(document.querySelectorAll('.dpe-arrow'));
+      const basePrice = 170000;
+      let   selection = {};
 
       const targets = {
         Menuiserie:['menui','volets'],
@@ -422,41 +407,46 @@
 
       function hex2rgba(h){
         const v=parseInt(h.slice(1),16);
-        return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255,1];
+        return[
+          (v>>16&255)/255,
+          (v>>8 &255)/255,
+          (v     &255)/255,
+          1
+        ];
       }
 
       function updateEnergy(){
         let sum=0, lines=[];
         Object.entries(selection).forEach(([cat])=>{
           const sw=document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
-
           if(!sw)return;
           const col=sw.dataset.color, imp=energyImpact[cat][col]||0;
           sum+=imp;
-          lines.push(• ${cat} – ${sw.nextElementSibling.textContent}: ${imp>0?'+':''}${imp} kWh/an);
+          lines.push(`• ${cat} – ${sw.nextElementSibling.textContent}: ${imp>0?'+':''}${imp} kWh/an`);
         });
-        energyEl.textContent = ${sum} kWh/an;
+        energyEl.textContent=`${sum} kWh/an`;
         const cls=getEnergyClass(sum);
-        classEl.textContent = cls==='Aplus'?'A+':cls;
-        barFill.style.width = ${Math.min(100,Math.round(sum/4000*100))}%;
+        classEl.textContent=cls==='Aplus'?'A+':cls;
+        barFill.style.width=`${Math.min(100,Math.round(sum/4000*100))}%`;
         arrows.forEach(a=>a.classList.remove('active'));
-        document.getElementById(arrow-${cls}).classList.add('active');
-        document.getElementById('energy-details').innerHTML = lines.join('<br>')||'<i>Aucun matériau sélectionné</i>';
+        document.getElementById(`arrow-${cls}`).classList.add('active');
+        document.getElementById('energy-details').innerHTML=
+          lines.length?lines.join('<br>'):'<i>Aucun matériau sélectionné</i>';
       }
 
       mv.addEventListener('load',()=>{
         const mats=mv.model.materials;
         document.querySelectorAll('.group').forEach(group=>{
-          const cat=group.dataset-cat, frags=targets[cat]||[];
+          const cat=group.dataset.cat, frags=targets[cat]||[];
           group.querySelectorAll('.swatch').forEach(sw=>{
             sw.addEventListener('click',()=>{
               group.querySelectorAll('.swatch').forEach(x=>x.classList.remove('selected'));
               sw.classList.add('selected');
-              selection[cat]=+sw.dataset-cost;
+              selection[cat]=+sw.dataset.cost;
               const tot=Object.values(selection).reduce((a,b)=>a+b,0);
-              optEl.textContent   = ${tot.toLocaleString('fr-FR')} €;
-              totalEl.textContent = ${(basePrice+tot).toLocaleString('fr-FR')} €;
-              const rgba=hex2rgba(sw.dataset-color);
+              optEl.textContent=`${tot.toLocaleString('fr-FR')} €`;
+              totalEl.textContent=`${(basePrice+tot).toLocaleString('fr-FR')} €`;
+              const rgba=hex2rgba(sw.dataset.color);
               mats.forEach(m=>{
                 const name=m.name.toLowerCase();
                 if(frags.some(f=>name.includes(f))){
@@ -475,6 +465,6 @@
       });
     });
   </script>
-
 </body>
 </html>
+
