@@ -30,13 +30,28 @@
       background:#dddddd;
     }
 
-    /* Panneau énergie */
+    /* === Panneau ÉNERGIE === */
     #energy-summary {
-      padding:1rem; border-top:1px solid #eee;
+      padding:1rem;
+      border-top:1px solid #eee;
     }
     #energy-summary h3 {
       font-size:1rem; color:#222; margin-bottom:.5rem;
     }
+    /* SVG DPE maison */
+    #dpe-svg {
+      display:block;
+      margin:0 auto 1rem;
+      width:200px; height:auto;
+    }
+    .dpe-arrow {
+      opacity:.2;
+      transition:opacity .5s;
+    }
+    .dpe-arrow.active {
+      opacity:1;
+    }
+
     .energy-line {
       display:flex; justify-content:space-between;
       margin-bottom:.25rem;
@@ -48,21 +63,12 @@
     #energy-bar-fill {
       height:100%; width:0; background:#4caf50; transition:width .5s;
     }
-    /* SVG DPE maison */
-    #dpe-svg {
-      display:block;
-      margin:0 auto 1rem;
-      width:200px; height:auto;
+    #energy-details {
+      margin-top:.5rem; font-size:.85rem; color:#555; line-height:1.4;
     }
-    .dpe-arrow {
-      opacity:.2;
-    }
-    .dpe-arrow.active {
-      opacity:1;
-      transition:opacity .5s;
-    }
+    /* ============================== */
 
-    /* Dimensions */
+    /* -- DIMENSIONS CARDS -- */
     .dimensions { display:grid; grid-template-columns:repeat(3,1fr);
       background:#fff; padding:1rem; border-top:1px solid #eee;
       border-radius:0 0 8px 8px; gap:1rem;
@@ -74,7 +80,7 @@
     .dim-card strong { display:block; font-size:1.25rem; color:#222 }
     .dim-card span { font-size:.85rem; color:#666 }
 
-    /* Contrôles, swatches, prix… */
+    /* -- CONTROLS & SWATCHES -- */
     .controls { background:#fff; border-radius:8px;
       box-shadow:0 2px 8px rgba(0,0,0,0.1);
       padding:1.5rem; overflow-y:auto;
@@ -97,46 +103,46 @@
     .option-label { font-size:.75rem; color:#444; margin-top:.3rem }
     .option-price { font-size:.7rem; color:#666 }
 
-    #price-summary {
-      background:#fff; border:1px solid #eee; border-radius:6px;
-      padding:1rem; margin:1rem 0;
+    /* -- PRICE SUMMARY -- */
+    #price-summary { background:#fff; border:1px solid #eee;
+      border-radius:6px; padding:1rem; margin:1rem 0;
       box-shadow:0 1px 4px rgba(0,0,0,0.05);
     }
     #price-summary h3 { font-size:1rem; color:#222; margin-bottom:.75rem }
-    #price-summary .line {
-      display:flex; justify-content:space-between;
-      color:#333; margin-bottom:.5rem; font-size:.9rem;
+    #price-summary .line { display:flex; justify-content:space-between;
+      margin-bottom:.5rem; font-size:.9rem; color:#333;
     }
-    #price-summary .line.total {
-      font-size:1.1rem; font-weight:700;
-    }
+    #price-summary .line.total { font-weight:700; font-size:1.1rem; }
+
     .action-buttons { display:flex; gap:.75rem }
-    .action-buttons button {
-      flex:1; padding:.75rem; font-size:.95rem;
+    .action-buttons button { flex:1; padding:.75rem; font-size:.95rem;
       border:none; border-radius:4px; cursor:pointer;
     }
     .btn-save { background:#f0f0f0; color:#333 }
-    .btn-quote{ background:#006aff; color:#fff }
+    .btn-quote { background:#006aff; color:#fff }
 
     @media (max-width:1024px){
-      #configurator{grid-template-columns:1fr}
-      .viewer-card{height:auto}
-      model-viewer{height:50vh!important;min-height:300px}
+      #configurator { grid-template-columns:1fr }
+      .viewer-card { height:auto }
+      model-viewer { height:50vh!important; min-height:300px }
     }
     @media (max-width:600px){
-      model-viewer{height:40vh!important;min-height:200px}
-      .dimensions{grid-template-columns:1fr}
+      model-viewer { height:40vh!important; min-height:200px }
+      .dimensions { grid-template-columns:1fr }
     }
   </style>
 </head>
 <body>
+
   <div id="configurator">
 
-    <!-- 3D + Énergie + dimensions -->
+    <!-- 3D VIEWER + ÉNERGIE + dimensions -->
     <div class="viewer-card">
-      <model-viewer id="mv"
+      <model-viewer
+        id="mv"
         src="MODERNHOME9.glb"
-        exposure="0.6" shadow-intensity="2.5"
+        exposure="0.6"
+        shadow-intensity="2.5"
         shadow-softness="1"
         camera-controls
         min-camera-orbit="0deg 0deg auto"
@@ -147,17 +153,19 @@
       <div id="energy-summary">
         <h3>Performance énergétique estimée</h3>
 
-        <!-- SVG animé -->
+        <!-- SVG “maison + flèches A+→G” -->
         <svg id="dpe-svg" viewBox="0 0 100 100">
           <!-- silhouette maison -->
           <path d="M10,60 L10,90 L90,90 L90,60 L50,30 Z" fill="#ccc"/>
-          <!-- flèches A+→G -->
+          <!-- flèches  A+ → G -->
           <polygon id="arrow-Aplus" class="dpe-arrow" points="50,30 70,30 65,25 65,35" fill="#006400"/>
-          <polygon id="arrow-A"     class="dpe-arrow" points="50,45 70,45 65,40 65,50" fill="#2e7d32"/>
-          <polygon id="arrow-B"     class="dpe-arrow" points="50,55 70,55 65,50 65,60" fill="#558b2f"/>
-          <polygon id="arrow-C"     class="dpe-arrow" points="50,65 70,65 65,60 65,70" fill="#9ccc65"/>
-          <polygon id="arrow-D"     class="dpe-arrow" points="50,75 70,75 65,70 65,80" fill="#ffeb3b"/>
-          <polygon id="arrow-E"     class="dpe-arrow" points="50,85 70,85 65,80 65,90" fill="#ffb300"/>
+          <polygon id="arrow-A"     class="dpe-arrow" points="50,40 70,40 65,35 65,45" fill="#2e7d32"/>
+          <polygon id="arrow-B"     class="dpe-arrow" points="50,50 70,50 65,45 65,55" fill="#558b2f"/>
+          <polygon id="arrow-C"     class="dpe-arrow" points="50,60 70,60 65,55 65,65" fill="#9ccc65"/>
+          <polygon id="arrow-D"     class="dpe-arrow" points="50,70 70,70 65,65 65,75" fill="#ffeb3b"/>
+          <polygon id="arrow-E"     class="dpe-arrow" points="50,80 70,80 65,75 65,85" fill="#ffb300"/>
+          <polygon id="arrow-F"     class="dpe-arrow" points="50,90 70,90 65,85 65,95" fill="#f4511e"/>
+          <polygon id="arrow-G"     class="dpe-arrow" points="50,100 70,100 65,95 65,105" fill="#d32f2f"/>
         </svg>
 
         <div class="energy-line">
@@ -171,11 +179,11 @@
         <div class="energy-bar">
           <div id="energy-bar-fill"></div>
         </div>
-        <h4 style="margin-top:1rem;font-size:0.9rem;color:#555">Détail par matériau</h4>
+        <h4 style="margin-top:1rem;font-size:.9rem;color:#555">Détail par matériau</h4>
         <div id="energy-details"><i>Aucun matériau sélectionné</i></div>
       </div>
 
-      <!-- Dimensions -->
+      <!-- Dimensions sous le viewer -->
       <div class="dimensions">
         <div class="dim-card"><strong>85 m²</strong><span>Surface</span></div>
         <div class="dim-card"><strong>3 Ch</strong><span>Chambres</span></div>
@@ -183,27 +191,119 @@
       </div>
     </div>
 
-    <!-- CONTROLES & PRIX à droite -->
+    <!-- CONTROLES + PRIX à droite -->
     <div class="controls">
       <h2>Configuration Modern’home</h2>
-      <!-- (votre structure .group / .swatch inchangée) -->
-      <!-- ... -->
-      <!-- Récap prix -->
+
+      <!-- Menuiserie ALU -->
+      <div class="group" data-cat="Menuiserie">
+        <h3>Menuiserie ALU</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499"></div>
+            <div class="option-label">Noir</div>
+            <div class="option-price">+2 499 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gouttière et descente -->
+      <div class="group" data-cat="Gouttiere">
+        <h3>Gouttière et descente</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pergola bioclimatique -->
+      <div class="group" data-cat="Pergola">
+        <h3>Pergola bioclimatique</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+8 500 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500"></div>
+            <div class="option-label">Noir</div>
+            <div class="option-price">+9 500 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peinture (mur extérieur) -->
+      <div class="group" data-cat="Murs">
+        <h3>Peinture (mur extérieur)</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
+            <div class="option-label">Beige WES</div>
+            <div class="option-price">+999 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
+            <div class="option-label">Ocre Mojave</div>
+            <div class="option-price">+1 499 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tôle ondulée -->
+      <div class="group" data-cat="Toit">
+        <h3>Tôle ondulée</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
+            <div class="option-label">Bleu Ardoise</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#A6A6A6" data-color="#A6A6A6" data-cost="0"></div>
+            <div class="option-label">Gris Acier</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800"></div>
+            <div class="option-label">Rouge Hibiscus</div>
+            <div class="option-price">+1 800 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Récapitulatif de prix -->
       <div id="price-summary">
         <h3>Récapitulatif de prix</h3>
         <div class="line"><span>Prix de base :</span><span id="base-price">170 000 €</span></div>
         <div class="line"><span>Vos options :</span><span id="opt-price">0 €</span></div>
         <div class="line total"><span>Total TTC :</span><span id="total-price">170 000 €</span></div>
       </div>
+
+      <!-- Boutons -->
       <div class="action-buttons">
         <button class="btn-save">Enregistrer la configuration</button>
         <button class="btn-quote">Demander un devis</button>
       </div>
     </div>
+
   </div>
 
   <script>
-    // données énergie
+    // --------------------------------------------------
     const energyImpact = {
       Toit:      {'#1A2E3F':3000,'#A6A6A6':3200,'#C0392B':3500},
       Pergola:   {'#FFFFFF':-200,'#000000':-300},
@@ -218,21 +318,26 @@
       if(kwh<3500) return 'C';
       return 'D';
     }
+    // --------------------------------------------------
 
     window.addEventListener('DOMContentLoaded',()=>{
-      const mv        = document.getElementById('mv');
-      const optEl     = document.getElementById('opt-price');
-      const totalEl   = document.getElementById('total-price');
-      const energyEl  = document.getElementById('energy-value');
-      const classEl   = document.getElementById('energy-class');
-      const barFill   = document.getElementById('energy-bar-fill');
-      const arrows    = Array.from(document.querySelectorAll('.dpe-arrow'));
-      let   selection = {};
+      const mv      = document.getElementById('mv');
+      const optEl   = document.getElementById('opt-price');
+      const totalEl = document.getElementById('total-price');
+      const energyEl= document.getElementById('energy-value');
+      const classEl = document.getElementById('energy-class');
+      const barFill = document.getElementById('energy-bar-fill');
+      const arrows  = Array.from(document.querySelectorAll('.dpe-arrow'));
+      let selection  = {};
 
       const targets = {
-        Menuiserie:['menui','volets'], Gouttiere:['gouttiere'],
-        Pergola:['pergola'], Murs:['murs'], Toit:['toit']
+        Menuiserie:['menui','volets'],
+        Gouttiere:['gouttiere'],
+        Pergola:['pergola'],
+        Murs:['murs'],
+        Toit:['toit']
       };
+
       function hex2rgba(h){
         const v=parseInt(h.slice(1),16);
         return[(v>>16&255)/255,(v>>8&255)/255,(v&255)/255,1];
@@ -240,38 +345,37 @@
 
       function updateEnergy(){
         let sum=0, details=[];
-        Object.entries(selection).forEach(([cat,cost])=>{
-          const sw=document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
+        Object.entries(selection).forEach(([cat])=>{
+          const sw = document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
           const col=sw.dataset.color;
           const imp=(energyImpact[cat]&&energyImpact[cat][col]!=null)?energyImpact[cat][col]:0;
           sum+=imp;
           details.push(`• ${cat} – ${sw.nextElementSibling.textContent} : ${imp>0?'+':''}${imp} kWh/an`);
         });
-        energyEl.textContent=sum+' kWh/an';
-        const cls=getEnergyClass(sum);
-        classEl.textContent=cls.replace('Aplus','A+');
-        barFill.style.width=Math.min(100,Math.round(sum/4000*100))+'%';
+        energyEl.textContent = sum + ' kWh/an';
+        const cls = getEnergyClass(sum);
+        classEl.textContent= cls==='Aplus'? 'A+' : cls;
+        barFill.style.width = Math.min(100,Math.round(sum/4000*100)) + '%';
 
-        // animation flèches
         arrows.forEach(a=>a.classList.remove('active'));
         document.getElementById('arrow-'+cls).classList.add('active');
 
-        document.getElementById('energy-details').innerHTML=details.join('<br>')||'<i>Aucun matériau sélectionné</i>';
+        document.getElementById('energy-details').innerHTML = details.join('<br>') || '<i>Aucun matériau sélectionné</i>';
       }
 
       mv.addEventListener('load',()=>{
-        const mats=mv.model.materials;
+        const mats = mv.model.materials;
         document.querySelectorAll('.group').forEach(group=>{
-          const cat=group.dataset.cat, frags=targets[cat]||[];
+          const cat = group.dataset.cat, frags = targets[cat]||[];
           group.querySelectorAll('.swatch').forEach(sw=>{
             sw.addEventListener('click',()=>{
               group.querySelectorAll('.swatch').forEach(x=>x.classList.remove('selected'));
               sw.classList.add('selected');
-              selection[cat]=+sw.dataset.cost;
-              const tot=Object.values(selection).reduce((a,b)=>a+b,0);
-              optEl.textContent=tot+' €';
-              totalEl.textContent=(170000+tot).toLocaleString('fr-FR')+' €';
-              const rgba=hex2rgba(sw.dataset.color);
+              selection[cat] = +sw.dataset.cost;
+              const tot = Object.values(selection).reduce((a,b)=>a+b,0);
+              optEl.textContent = tot.toLocaleString('fr-FR') + ' €';
+              totalEl.textContent = (170000 + tot).toLocaleString('fr-FR') + ' €';
+              const rgba = hex2rgba(sw.dataset.color);
               mats.forEach(m=>{
                 if(frags.some(f=>m.name.toLowerCase().includes(f))){
                   m.pbrMetallicRoughness.setBaseColorFactor(rgba);
@@ -282,13 +386,14 @@
               updateEnergy();
             });
           });
-          const first=group.querySelector('.swatch');
+          const first = group.querySelector('.swatch');
           if(first) first.click();
         });
         updateEnergy();
       });
     });
   </script>
+
 </body>
 </html>
 
