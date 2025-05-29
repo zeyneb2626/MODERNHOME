@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Configuration Modern'home</title>
-  <script type="module"
-          src="https://unpkg.com/@google/model-viewer@1.12.0/dist/model-viewer.min.js">
-  </script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer@1.12.0/dist/model-viewer.min.js"></script>
   <style>
     * { box-sizing:border-box; margin:0; padding:0 }
     html, body { height:100%; font-family:sans-serif; background:#f0f2f5 }
@@ -74,20 +72,21 @@
     }
 
     .rating-bar {
+      position: relative;
       display: flex;
       align-items: center;
-      height: 24px;
-      border-radius: 4px;
-      padding: 0 8px;
+      height: 32px;
+      margin-bottom: 4px;
+      padding: 0 12px;
       color: white;
-      opacity: 0.3;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%);
       transition: all 0.3s ease;
-      font-size: 0.85em;
+      width: 85%;
     }
 
     .rating-bar.active {
-      opacity: 1;
-      transform: translateX(5px) scale(1.02);
+      width: 100%;
+      transform: translateX(8px);
     }
 
     .rating-label {
@@ -173,6 +172,42 @@
       color:#222;
       margin-bottom:1rem;
     }
+
+    .price-display {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1rem 0 2rem;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .price-total {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-details {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    .price-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .price-label {
+      color: #94a3b8;
+    }
+
     .group { margin-bottom:1.5rem }
     .group h3 {
       font-size:1.1rem;
@@ -210,31 +245,6 @@
     .option-label { margin-top:.3rem; font-size:.75rem; color:#444 }
     .option-price { font-size:.7rem; color:#666 }
 
-    #price-summary {
-      background:#fff;
-      border:1px solid #eee;
-      border-radius:6px;
-      padding:1rem;
-      margin:1rem 0;
-      box-shadow:0 1px 4px rgba(0,0,0,0.05);
-    }
-    #price-summary h3 {
-      font-size:1rem;
-      margin-bottom:.75rem;
-      color:#222;
-    }
-    #price-summary .line {
-      display:flex;
-      justify-content:space-between;
-      margin-bottom:.5rem;
-      font-size:.9rem;
-      color:#333;
-    }
-    #price-summary .line.total {
-      font-weight:700;
-      font-size:1.1rem;
-    }
-
     .action-buttons {
       display:flex;
       gap:.75rem
@@ -260,13 +270,17 @@
     }
 
     @keyframes drift {
-      0% { transform: translateY(0); opacity: 0.6; }
-      50% { transform: translateY(-2px); opacity: 0.3; }
-      100% { transform: translateY(0); opacity: 0.6; }
+      0% { transform: translateY(0) translateX(0); opacity: 0.6; }
+      50% { transform: translateY(-2px) translateX(2px); opacity: 0.3; }
+      100% { transform: translateY(0) translateX(0); opacity: 0.6; }
     }
 
     .smoke path {
       animation: drift 3s infinite ease-in-out;
+    }
+
+    .house-body {
+      transition: fill 0.6s ease-in-out, stroke 0.6s ease-in-out;
     }
   </style>
 </head>
@@ -292,6 +306,7 @@
           <div class="house-container">
             <svg class="house-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
               <path
+                class="house-body"
                 d="M20,70 
                    L20,40 
                    L50,15 
@@ -385,70 +400,21 @@
     <div class="controls">
       <h2>Configuration Modern'home</h2>
 
-      <div class="group" data-cat="Menuiserie">
-        <h3>Menuiserie ALU</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
+      <div class="price-display">
+        <div class="price-total" id="total-price">170 000 €</div>
+        <div class="price-details">
+          <div class="price-item">
+            <span class="price-label">Prix de base :</span>
+            <span id="base-price">170 000 €</span>
           </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499"></div>
-            <div class="option-label">Noir</div>
-            <div class="option-price">+2 499 €</div>
+          <div class="price-item">
+            <span class="price-label">Options :</span>
+            <span id="opt-price">0 €</span>
           </div>
         </div>
       </div>
 
-      <div class="group" data-cat="Gouttiere">
-        <h3>Gouttière et descente</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="group" data-cat="Pergola">
-        <h3>Pergola bioclimatique</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+8 500 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500"></div>
-            <div class="option-label">Noir</div>
-            <div class="option-price">+9 500 €</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="group" data-cat="Murs">
-        <h3>Peinture (mur extérieur)</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
-            <div class="option-label">Beige WES</div>
-            <div class="option-price">+999 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
-            <div class="option-label">Ocre Mojave</div>
-            <div class="option-price">+1 499 €</div>
-          </div>
-        </div>
-      </div>
-
+      <!-- Toit -->
       <div class="group" data-cat="Toit">
         <h3>Tôle ondulée</h3>
         <div class="options">
@@ -470,11 +436,94 @@
         </div>
       </div>
 
-      <div id="price-summary">
-        <h3>Récapitulatif de prix</h3>
-        <div class="line"><span>Prix de base :</span><span id="base-price">170 000 €</span></div>
-        <div class="line"><span>Vos options :</span><span id="opt-price">0 €</span></div>
-        <div class="line total"><span>Total TTC :</span><span id="total-price">170 000 €</span></div>
+      <!-- Peinture -->
+      <div class="group" data-cat="Murs">
+        <h3>Peinture (mur extérieur)</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
+            <div class="option-label">Beige WES</div>
+            <div class="option-price">+999 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
+            <div class="option-label">Ocre Mojave</div>
+            <div class="option-price">+1 499 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pergola -->
+      <div class="group" data-cat="Pergola">
+        <h3>Pergola bioclimatique</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+8 500 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500"></div>
+            <div class="option-label">Noir</div>
+            <div class="option-price">+9 500 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menuiserie ALU -->
+      <div class="group" data-cat="Menuiserie">
+        <h3>Menuiserie ALU</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499"></div>
+            <div class="option-label">Noir</div>
+            <div class="option-price">+2 499 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gouttière -->
+      <div class="group" data-cat="Gouttiere">
+        <h3>Gouttière et descente</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+            <div class="option-label">Blanc</div>
+            <div class="option-price">+0 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bardage -->
+      <div class="group" data-cat="Bardage">
+        <h3>Bardage extérieur</h3>
+        <div class="options">
+          <div class="option">
+            <div class="swatch" style="background-color:#C19A6B" data-color="#C19A6B" data-cost="520"></div>
+            <div class="option-label">Chêne clair</div>
+            <div class="option-price">+520 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#8B5A2B" data-color="#8B5A2B" data-cost="790"></div>
+            <div class="option-label">Chêne foncé</div>
+            <div class="option-price">+790 €</div>
+          </div>
+          <div class="option">
+            <div class="swatch" style="background-color:#3D4C5C" data-color="#3D4C5C" data-cost="895"></div>
+            <div class="option-label">Gris oragé</div>
+            <div class="option-price">+895 €</div>
+          </div>
+        </div>
       </div>
 
       <div class="action-buttons">
