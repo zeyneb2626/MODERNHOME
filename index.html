@@ -3,11 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Configuration Modern'home</title>
+  <title>Configuration Tradi'home</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer@1.12.0/dist/model-viewer.min.js"></script>
   <style>
     * { box-sizing:border-box; margin:0; padding:0 }
     html, body { height:100%; font-family:sans-serif; background:#f0f2f5 }
+
+    .fixed-price {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+      text-align: center;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .fixed-price.visible {
+      transform: translateY(0);
+    }
+
+    .fixed-price-label {
+      font-size: 1rem;
+      color: #666;
+      margin-right: 1rem;
+    }
+
+    .fixed-price-amount {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1a202c;
+    }
+
     #configurator {
       display:grid;
       grid-template-columns:2fr 1fr;
@@ -99,7 +130,6 @@
       font-size: 0.9em;
     }
 
-    
     .rating-A-plus { background-color: #1B5E20; }
     .rating-A { background-color: #2E7D32; }
     .rating-B { background-color: #388E3C; }
@@ -294,12 +324,17 @@
   </style>
 </head>
 <body>
+  <div class="fixed-price" id="fixed-price">
+    <span class="fixed-price-label">Prix TTC</span>
+    <span class="fixed-price-amount" id="fixed-price-amount">170 000 €</span>
+  </div>
+
   <div id="configurator">
     <div class="viewer-card">
       <model-viewer
         id="mv"
-        src="MODERNHOME9.glb"
-        alt="Maison Modern'home"
+        src="TRADIHOME17.glb"
+        alt="Maison Tradi'home"
         exposure="0.6"
         shadow-intensity="2.5"
         shadow-softness="1"
@@ -407,7 +442,7 @@
     </div>
 
     <div class="controls">
-      <h2>Configuration Modern'home</h2>
+      <h2>Configuration Tradi'home</h2>
 
       <div class="price-display">
         <div class="price-total" id="total-price">170 000 €</div>
@@ -416,7 +451,6 @@
             <span class="price-label">Prix de base</span>
             <span class="price-value">170 000 €</span>
           </div>
-          <!-- Les éléments de prix seront ajoutés ici dynamiquement -->
         </div>
       </div>
 
@@ -551,13 +585,24 @@
     window.addEventListener('DOMContentLoaded', () => {
       const mv = document.getElementById('mv');
       const totalEl = document.getElementById('total-price');
+      const fixedPriceEl = document.getElementById('fixed-price-amount');
       const energyEl = document.getElementById('energy-value');
       const classEl = document.getElementById('energy-class');
       const barFill = document.getElementById('energy-bar-fill');
       const ratingBars = document.querySelectorAll('.rating-bar');
       const houseSvg = document.querySelector('.house-svg');
+      const fixedPrice = document.getElementById('fixed-price');
       const basePrice = 170000;
       let selection = {};
+
+      // Gestion de l'affichage du prix fixe
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+          fixedPrice.classList.add('visible');
+        } else {
+          fixedPrice.classList.remove('visible');
+        }
+      });
 
       const targets = {
         Menuiserie: ['menui','volets'],
@@ -640,7 +685,9 @@
               sw.classList.add('selected');
               selection[cat] = +sw.dataset.cost;
               const tot = Object.values(selection).reduce((a,b) => a+b, 0);
-              totalEl.textContent = `${(basePrice+tot).toLocaleString('fr-FR')} €`;
+              const totalPrice = `${(basePrice+tot).toLocaleString('fr-FR')} €`;
+              totalEl.textContent = totalPrice;
+              fixedPriceEl.textContent = totalPrice;
               updatePriceBreakdown();
               const rgba = hex2rgba(sw.dataset.color);
               mats.forEach(m => {
