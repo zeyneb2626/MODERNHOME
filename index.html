@@ -56,8 +56,8 @@
     }
 
     .house-container {
-      width: 200px;
-      height: 200px;
+      width: 120px;
+      height: 120px;
     }
 
     .house-svg {
@@ -71,26 +71,23 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      position: relative;
-      padding-right: 40px;
     }
 
     .rating-bar {
       display: flex;
       align-items: center;
-      height: 32px;
+      height: 24px;
       border-radius: 4px;
       padding: 0 8px;
       color: white;
-      width: 85%;
-      transition: all 0.3s ease-in-out;
-      opacity: 0.7;
+      opacity: 0.3;
+      transition: all 0.3s ease;
+      font-size: 0.85em;
     }
 
     .rating-bar.active {
       opacity: 1;
-      width: 100%;
-      transform: translateX(10px);
+      transform: translateX(5px) scale(1.02);
     }
 
     .rating-label {
@@ -261,6 +258,16 @@
       model-viewer{ height:40vh!important; min-height:200px }
       .dimensions{grid-template-columns:1fr}
     }
+
+    @keyframes drift {
+      0% { transform: translateY(0); opacity: 0.6; }
+      50% { transform: translateY(-2px); opacity: 0.3; }
+      100% { transform: translateY(0); opacity: 0.6; }
+    }
+
+    .smoke path {
+      animation: drift 3s infinite ease-in-out;
+    }
   </style>
 </head>
 <body>
@@ -283,111 +290,89 @@
 
         <div id="energy-visual">
           <div class="house-container">
-            <svg class="house-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="windowGradient" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="white" stop-opacity="0.5"/>
-                  <stop offset="100%" stop-color="white" stop-opacity="0"/>
-                </linearGradient>
-              </defs>
+            <svg class="house-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M20,70 
+                   L20,40 
+                   L50,15 
+                   L80,40
+                   L80,70"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="6"
+                stroke-linejoin="round"
+                stroke-linecap="round"/>
               
-              <!-- Sol avec herbe détaillée -->
-              <path d="M0,140 H200" stroke="#2E7D32" stroke-width="2"/>
+              <path
+                d="M65,30 L65,20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="6"
+                stroke-linecap="round"/>
               
-              <!-- Touffes d'herbe -->
-              {[...Array(10)].map((_, i) => (
-                <g key={i} transform={`translate(${i * 20}, 140)`}>
-                  <path d={`
-                    M0,0 C1,-2 2,-3 1,-4
-                    M0,0 C-1,-2 0,-3 1,-3
-                    M0,0 C0,-2 1,-3 0,-4
-                  `} stroke="#4CAF50" stroke-width="0.5" stroke-linecap="round"/>
-                </g>
-              ))}
-              
-              <!-- Corps principal de la maison -->
-              <path class="house-body" d="
-                M30,140 L30,80
-                L100,50 L170,80
-                L170,140
-                L30,140
-              " fill="currentColor" stroke="currentColor" stroke-width="4"/>
-              
-              <!-- Extension gauche -->
-              <path d="
-                M30,110 L10,110
-                L10,140 L30,140
-              " fill="currentColor" stroke="currentColor" stroke-width="4"/>
-              
-              <!-- Extension droite (pergola) -->
-              <path d="
-                M170,110 L190,110
-                L190,140 L170,140
-              " fill="currentColor" stroke="currentColor" stroke-width="4"/>
-              
-              <!-- Fenêtres -->
-              <rect x="45" y="90" width="20" height="20" fill="#E3F2FD" stroke="currentColor" stroke-width="2"/>
-              <rect x="135" y="90" width="20" height="20" fill="#E3F2FD" stroke="currentColor" stroke-width="2"/>
-              
-              <!-- Porte -->
-              <rect x="90" y="100" width="20" height="40" fill="#8B4513" stroke="#654321" stroke-width="2"/>
-              
-              <!-- Pergola -->
-              <path d="M170,110 H190" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
-              <path d="M175,110 V140" stroke="currentColor" stroke-width="2"/>
-              <path d="M185,110 V140" stroke="currentColor" stroke-width="2"/>
+              <g class="smoke">
+                <path
+                  d="M63,17 
+                     C67,15 69,13 67,11
+                     M67,12
+                     C71,10 73,8 71,6"
+                  fill="none"
+                  stroke="#999"
+                  stroke-width="1"
+                  stroke-linecap="round"/>
+              </g>
             </svg>
           </div>
 
           <div class="energy-rating-scale">
             <div class="rating-bar rating-A-plus" data-rating="A+">
               <span class="rating-label">A+</span>
-              <span class="rating-value">≤ 50</span>
+              <span class="rating-value">≤50</span>
             </div>
             <div class="rating-bar rating-A" data-rating="A">
               <span class="rating-label">A</span>
-              <span class="rating-value">51 à 90</span>
+              <span class="rating-value">51-90</span>
             </div>
-            <div class="rating-bar rating-B active" data-rating="B">
+            <div class="rating-bar rating-B" data-rating="B">
               <span class="rating-label">B</span>
-              <span class="rating-value">91 à 150</span>
+              <span class="rating-value">91-150</span>
             </div>
             <div class="rating-bar rating-C" data-rating="C">
               <span class="rating-label">C</span>
-              <span class="rating-value">151 à 230</span>
+              <span class="rating-value">151-230</span>
             </div>
             <div class="rating-bar rating-D" data-rating="D">
               <span class="rating-label">D</span>
-              <span class="rating-value">231 à 330</span>
+              <span class="rating-value">231-330</span>
             </div>
             <div class="rating-bar rating-E" data-rating="E">
               <span class="rating-label">E</span>
-              <span class="rating-value">331 à 450</span>
+              <span class="rating-value">331-450</span>
             </div>
             <div class="rating-bar rating-F" data-rating="F">
               <span class="rating-label">F</span>
-              <span class="rating-value">451 à 590</span>
+              <span class="rating-value">451-590</span>
             </div>
             <div class="rating-bar rating-G" data-rating="G">
               <span class="rating-label">G</span>
-              <span class="rating-value">> 590</span>
+              <span class="rating-value">>590</span>
             </div>
           </div>
         </div>
 
         <div class="energy-line">
           <span>Consommation :</span>
-          <span id="energy-value">120 kWh/an</span>
+          <span id="energy-value">0 kWh/an</span>
         </div>
         <div class="energy-line">
           <span>Classe :</span>
-          <span id="energy-class">B</span>
+          <span id="energy-class">–</span>
         </div>
         <div class="energy-bar">
           <div id="energy-bar-fill"></div>
         </div>
         <h4 style="margin-top:1rem;font-size:.9rem;color:#555">Détail par matériau</h4>
-        <div id="energy-details"><i>Configuration de base</i></div>
+        <div id="energy-details"><i>Aucun matériau sélectionné</i></div>
       </div>
 
       <div class="dimensions">
@@ -404,12 +389,12 @@
         <h3>Menuiserie ALU</h3>
         <div class="options">
           <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0" data-energy="120"></div>
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
             <div class="option-label">Blanc</div>
             <div class="option-price">+0 €</div>
           </div>
           <div class="option">
-            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499" data-energy="150"></div>
+            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="2499"></div>
             <div class="option-label">Noir</div>
             <div class="option-price">+2 499 €</div>
           </div>
@@ -420,7 +405,7 @@
         <h3>Gouttière et descente</h3>
         <div class="options">
           <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0" data-energy="120"></div>
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
             <div class="option-label">Blanc</div>
             <div class="option-price">+0 €</div>
           </div>
@@ -431,12 +416,12 @@
         <h3>Pergola bioclimatique</h3>
         <div class="options">
           <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500" data-energy="120"></div>
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
             <div class="option-label">Blanc</div>
             <div class="option-price">+8 500 €</div>
           </div>
           <div class="option">
-            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500" data-energy="150"></div>
+            <div class="swatch" style="background-color:#000000" data-color="#000000" data-cost="9500"></div>
             <div class="option-label">Noir</div>
             <div class="option-price">+9 500 €</div>
           </div>
@@ -447,17 +432,17 @@
         <h3>Peinture (mur extérieur)</h3>
         <div class="options">
           <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0" data-energy="120"></div>
+            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
             <div class="option-label">Blanc</div>
             <div class="option-price">+0 €</div>
           </div>
           <div class="option">
-            <div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999" data-energy="150"></div>
+            <div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
             <div class="option-label">Beige WES</div>
             <div class="option-price">+999 €</div>
           </div>
           <div class="option">
-            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499" data-energy="180"></div>
+            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
             <div class="option-label">Ocre Mojave</div>
             <div class="option-price">+1 499 €</div>
           </div>
@@ -468,17 +453,17 @@
         <h3>Tôle ondulée</h3>
         <div class="options">
           <div class="option">
-            <div class="swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0" data-energy="120"></div>
+            <div class="swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
             <div class="option-label">Bleu Ardoise</div>
             <div class="option-price">+0 €</div>
           </div>
           <div class="option">
-            <div class="swatch" style="background-color:#A6A6A6" data-color="#A6A6A6" data-cost="0" data-energy="150"></div>
+            <div class="swatch" style="background-color:#A6A6A6" data-color="#A6A6A6" data-cost="0"></div>
             <div class="option-label">Gris Acier</div>
             <div class="option-price">+0 €</div>
           </div>
           <div class="option">
-            <div class="swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800" data-energy="180"></div>
+            <div class="swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800"></div>
             <div class="option-label">Rouge Hibiscus</div>
             <div class="option-price">+1 800 €</div>
           </div>
@@ -501,11 +486,11 @@
 
   <script>
     const energyImpact = {
-      Toit:       {'#1A2E3F':120,'#A6A6A6':150,'#C0392B':180},
-      Pergola:    {'#FFFFFF':120,'#000000':150},
-      Murs:       {'#FFFFFF':120,'#D4C4A3':150,'#E6C7B1':180},
-      Menuiserie: {'#FFFFFF':120,'#000000':150},
-      Gouttiere:  {'#FFFFFF':120}
+      Toit:      {'#1A2E3F':3000,'#A6A6A6':3200,'#C0392B':3500},
+      Pergola:   {'#FFFFFF':-200,'#000000':300},
+      Murs:      {'#FFFFFF':0,'#D4C4A3':100,'#E6C7B1':150},
+      Menuiserie:{'#FFFFFF':0,'#000000':50},
+      Gouttiere: {'#FFFFFF':0}
     };
 
     const ratingColors = {
@@ -520,13 +505,13 @@
     };
 
     function getEnergyClass(kwh) {
-      if(kwh <= 50) return 'Aplus';
-      if(kwh <= 90) return 'A';
-      if(kwh <= 150) return 'B';
-      if(kwh <= 230) return 'C';
-      if(kwh <= 330) return 'D';
-      if(kwh <= 450) return 'E';
-      if(kwh <= 590) return 'F';
+      if(kwh < 2000) return 'Aplus';
+      if(kwh < 2500) return 'A';
+      if(kwh < 3000) return 'B';
+      if(kwh < 3500) return 'C';
+      if(kwh < 4000) return 'D';
+      if(kwh < 4500) return 'E';
+      if(kwh < 5000) return 'F';
       return 'G';
     }
 
@@ -543,11 +528,11 @@
       let selection = {};
 
       const targets = {
-        Menuiserie: ['menui','volets'],
-        Gouttiere:  ['gouttiere'],
-        Pergola:    ['pergola'],
-        Murs:       ['murs'],
-        Toit:       ['toit']
+        Menuiserie:['menui','volets'],
+        Gouttiere :['gouttiere'],
+        Pergola   :['pergola'],
+        Murs      :['murs'],
+        Toit      :['toit']
       };
 
       function hex2rgba(h) {
@@ -561,22 +546,20 @@
       }
 
       function updateEnergy() {
-        let sum = 120, lines = []; // Valeur de base à 120 kWh/an (classe B)
+        let sum = 0, lines = [];
         Object.entries(selection).forEach(([cat]) => {
           const sw = document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
           if(!sw) return;
           const col = sw.dataset.color;
-          const imp = energyImpact[cat][col] || 120;
-          sum += (imp - 120); // On soustrait la valeur de base pour avoir l'impact net
-          if (imp !== 120) {
-            lines.push(`• ${cat} – ${sw.nextElementSibling.textContent}: ${imp>120?'+':''}${imp-120} kWh/an`);
-          }
+          const imp = energyImpact[cat][col] || 0;
+          sum += imp;
+          lines.push(`• ${cat} – ${sw.nextElementSibling.textContent}: ${imp>0?'+':''}${imp} kWh/an`);
         });
 
         energyEl.textContent = `${sum} kWh/an`;
         const cls = getEnergyClass(sum);
         classEl.textContent = cls === 'Aplus' ? 'A+' : cls;
-        barFill.style.width = `${Math.min(100, Math.round(sum/590*100))}%`;
+        barFill.style.width = `${Math.min(100, Math.round(sum/4000*100))}%`;
         
         ratingBars.forEach(bar => {
           const rating = bar.dataset.rating;
@@ -587,7 +570,7 @@
         houseSvg.style.color = ratingColors[cls];
 
         document.getElementById('energy-details').innerHTML =
-          lines.length ? lines.join('<br>') : '<i>Configuration de base</i>';
+          lines.length ? lines.join('<br>') : '<i>Aucun matériau sélectionné</i>';
       }
 
       mv.addEventListener('load', () => {
