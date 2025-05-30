@@ -176,27 +176,73 @@
     }
 
     .dimensions {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      background: #fff;
-      padding: 1rem;
-      border-top: 1px solid #eee;
-      border-radius: 0 0 8px 8px;
-      gap: 1rem;
-    }
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #fff;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+  border-radius: 0 0 8px 8px;
+  gap: 1rem;
+}
 
-    .dim-card {
-      background: #fff;
-      border: 1px solid #eee;
-      border-radius: 6px;
-      padding: .75rem;
-      text-align: center;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
+.dim-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: .75rem;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
 
-    .dim-card strong { display: block; font-size: 1.25rem; color: #222; }
-    .dim-card span { font-size: .85rem; color: #666; }
+.dim-card strong { 
+  display: block; 
+  font-size: 1.25rem; 
+  color: #222;
+}
+
+.dim-card span { 
+  font-size: .85rem; 
+  color: #666;
+}
+
+@media (max-width: 1024px) {
+  #configurator { 
+    grid-template-columns: 1fr;
+  }
+  model-viewer { 
+    height: 50vh !important; 
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  model-viewer { 
+    height: 40vh !important; 
+    min-height: 200px;
+  }
+  .dimensions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .dim-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    padding: 1rem;
+  }
+  .dim-card strong {
+    font-size: 1.1rem;
+    margin-right: 1rem;
+  }
+  .dim-card span {
+    font-size: 0.9rem;
+  }
+}
+
 
     .controls {
       background: #fff;
@@ -441,7 +487,7 @@
       </div>
 
       <div class="dimensions">
-        <div class="dim-card"><strong>85 m²</strong><span>Surface</span></div>
+        <div class="dim-card"><strong>92 m²</strong><span>Surface</span></div>
         <div class="dim-card"><strong>3 Ch</strong><span>Chambres</span></div>
         <div class="dim-card"><strong>2 SdE</strong><span>Salles d'eau</span></div>
       </div>
