@@ -391,26 +391,20 @@
     <span class="fixed-price-amount" id="fixed-price-amount">170 000 €</span>
   </div>
 
-  <model-viewer
+ <div id="configurator">
+    <div class="viewer-card">
+      <model-viewer
         id="mv"
         src="MODERNHOME12.glb"
         alt="Maison Modern'home"
-        exposure="0.8"
+        exposure="1"
         shadow-intensity="2.5"
         shadow-softness="1"
         camera-controls
-        camera-orbit="45deg 75deg 8m"
-        camera-target="0m 1.5m 0m"
-        min-camera-orbit="auto 10deg auto"
-        max-camera-orbit="auto 160deg auto"
-        min-field-of-view="10deg"
-        max-field-of-view="45deg"
-        interpolation-decay="200"
-        interaction-prompt="none"
-        touch-action="pan-y">
-        <div class="controls-hint">
-          Cliquez et glissez pour faire tourner • Molette pour zoomer
-        </div>
+        min-camera-orbit="-Infinity 0deg auto"
+        max-camera-orbit="Infinity 90deg auto"
+        camera-target="0m 1m 0m"
+        interaction-prompt="none">
       </model-viewer>
    
       <div id="energy-summary">
