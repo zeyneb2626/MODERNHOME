@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Configuration Modern'home</title>
+  <title>Configuration Tradi'home</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     * { box-sizing:border-box; margin:0; padding:0 }
@@ -39,27 +39,30 @@
       color: #1a202c;
     }
 
+    /* DESKTOP LAYOUT */
     #configurator {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      height: 100vh;
-      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      gap: 0.5rem;
       padding: 1rem;
     }
 
+    /* TOP SECTION - MODÈLE 3D UNIQUEMENT */
+    .top-section {
+      height: 50vh;
+    }
+
+    /* MODÈLE 3D PLEINE LARGEUR */
     .viewer-card {
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
       overflow: hidden;
-      position: relative;
-      z-index: 1;
+      height: 100%;
     }
 
     model-viewer {
-      flex: 5;
       width: 100%;
       height: 100%;
       background: #dddddd;
@@ -67,40 +70,81 @@
       touch-action: none;
     }
 
-    #energy-summary {
-      flex: 2;
+    /* BOTTOM SECTION - CONFIGURATION */
+    .bottom-section {
       background: #fff;
-      border-top: 1px solid #eee;
-      overflow-y: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 1rem;
+      flex: 1;
     }
 
-    #energy-summary h3 {
+    .config-header {
+      text-align: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.75rem;
+    }
+
+    .config-header h2 {
+      font-size: 1.5rem;
+      color: #222;
+      margin-bottom: 0.5rem;
+    }
+
+    .config-header .current-price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #1a202c;
+    }
+
+    .config-content {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1.5rem;
+    }
+
+    /* COLONNE GAUCHE - ÉNERGIE + PLAN + INFOS MAISON */
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* SECTION ÉNERGIE + PLAN CÔTE À CÔTE */
+    .energy-plan-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .energy-section {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+    }
+
+    .energy-section h3 {
       font-size: 1rem;
       color: #222;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
-    #energy-visual {
+    .energy-visual {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 2rem;
-      margin-bottom: 1rem;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
     }
 
-    .house-container {
-      width: 120px;
-      height: 120px;
+    .house-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
     }
 
-    .house-svg {
-      width: 100%;
-      height: 100%;
-      transition: all 0.6s ease-in-out;
-    }
-
-    .energy-rating-scale {
+    .rating-scale {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -110,29 +154,27 @@
     .rating-bar {
       display: flex;
       align-items: center;
-      height: 24px;
-      padding: 0 12px;
+      height: 16px;
+      padding: 0 8px;
       color: white;
       opacity: 0.7;
+      font-size: 0.75rem;
       transition: all 0.3s ease;
-      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
-      width: 200px;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+      width: 140px;
     }
 
     .rating-bar.active {
       opacity: 1;
-      width: 220px;
-      transform: translateX(8px);
+      width: 160px;
+      transform: translateX(6px);
+      box-shadow: 0 0 12px rgba(0, 106, 255, 0.4);
     }
 
     .rating-label {
       font-weight: bold;
-      margin-right: 8px;
-      min-width: 25px;
-    }
-
-    .rating-value {
-      font-size: 0.9em;
+      margin-right: 6px;
+      min-width: 16px;
     }
 
     .rating-A-plus { background-color: #1B5E20; }
@@ -144,230 +186,497 @@
     .rating-F { background-color: #FF9800; }
     .rating-G { background-color: #F44336; }
 
-    .energy-line {
+    .energy-info {
       display: flex;
       justify-content: space-between;
-      margin-bottom: .25rem;
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
     }
 
     .energy-bar {
       width: 100%;
-      height: 6px;
+      height: 4px;
       background: #eee;
-      border-radius: 3px;
+      border-radius: 2px;
       overflow: hidden;
-      margin-top: .5rem;
-    }
-
-    #energy-bar-fill {
-      height: 100%;
-      width: 0;
-      background: #4caf50;
-      transition: width .5s;
-    }
-
-    #energy-details {
-      margin-top: .5rem;
-      font-size: .85rem;
-      color: #555;
-      line-height: 1.4;
-      max-height: 120px;
-      overflow: auto;
-    }
-
-    .dimensions {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  background: #fff;
-  padding: 1rem;
-  border-top: 1px solid #eee;
-  border-radius: 0 0 8px 8px;
-  gap: 1rem;
-}
-
-.dim-card {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  padding: .75rem;
-  text-align: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
-}
-
-.dim-card strong { 
-  display: block; 
-  font-size: 1.25rem; 
-  color: #222;
-}
-
-.dim-card span { 
-  font-size: .85rem; 
-  color: #666;
-}
-
-@media (max-width: 1024px) {
-  #configurator { 
-    grid-template-columns: 1fr;
-  }
-  model-viewer { 
-    height: 50vh !important; 
-    min-height: 300px;
-  }
-}
-
-@media (max-width: 600px) {
-  model-viewer { 
-    height: 40vh !important; 
-    min-height: 200px;
-  }
-  .dimensions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .dim-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: left;
-    padding: 1rem;
-  }
-  .dim-card strong {
-    font-size: 1.1rem;
-    margin-right: 1rem;
-  }
-  .dim-card span {
-    font-size: 0.9rem;
-  }
-}
-
-
-    .controls {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-      overflow-y: auto;
-      position: relative;
-      z-index: 2;
-      pointer-events: auto;
-    }
-
-    .controls h2 {
-      font-size: 1.5rem;
-      color: #222;
       margin-bottom: 0.5rem;
     }
 
-    .current-price {
-      font-size: 1.75rem;
-      font-weight: bold;
-      color: #1a202c;
-      margin-bottom: 2rem;
+    .energy-details {
+      font-size: 0.75rem;
+      color: #555;
+      line-height: 1.3;
     }
 
-    .price-display {
+    /* SECTION PLAN À CÔTÉ DE L'ÉNERGIE */
+    .plan-section {
       background: #f8fafc;
       border-radius: 8px;
-      padding: 1.5rem;
-      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan-section h3 {
+      font-size: 1rem;
+      color: #222;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .plan-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+    }
+
+    .plan-content img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .plan-fallback {
+      text-align: center;
+      color: #999;
+    }
+
+    .plan-fallback-box {
+      width: 100px;
+      height: 70px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      margin: 0 auto 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    /* INFOS MAISON */
+    .dimensions-section {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1rem;
       border: 1px solid #e2e8f0;
     }
 
-    .price-breakdown {
-      margin-top: 1rem;
+    .dimensions-section h3 {
+      font-size: 1rem;
+      color: #222;
+      margin-bottom: 0.75rem;
+    }
+
+    .dim-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    .dim-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .dim-card strong {
+      font-size: 1.1rem;
+      color: #222;
+    }
+
+    .dim-card span {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    /* COLONNE DROITE - CONFIGURATION */
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* GRILLE 3x2 POUR LES CONFIGURATIONS */
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .config-group {
+      margin-bottom: 0;
+    }
+
+    .config-group h3 {
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .config-options {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .config-option {
+      text-align: center;
+      width: 50px;
+    }
+
+    .config-swatch {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .config-swatch:hover { 
+      border-color: #999;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .config-swatch.selected { 
+      border-color: #006aff;
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 106, 255, 0.3);
+    }
+
+    .config-swatch.selected::after {
+      content: '✔';
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      color: #006aff;
+      font-size: 1rem;
+    }
+
+    .config-option-label {
+      font-size: 0.7rem;
+      margin-top: 0.25rem;
+      line-height: 1.1;
+      color: #444;
+    }
+
+    .config-option-price {
+      font-size: 0.65rem;
+      color: #666;
+    }
+
+    /* PRIX ET BOUTONS */
+    .price-section {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      margin-top: 0.75rem;
+    }
+
+    .price-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
     }
 
     .price-item {
       display: flex;
       justify-content: space-between;
-      padding: 0.5rem 0;
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+      padding: 0.25rem 0;
       border-bottom: 1px solid #e2e8f0;
     }
 
     .price-item:last-child {
       border-bottom: none;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 2px solid #ccc;
     }
-
-    .price-label {
-      color: #64748b;
-    }
-
-    .price-value {
-      font-weight: 500;
-      color: #1a202c;
-    }
-
-    .group { margin-bottom: 1.5rem; }
-    .group h3 {
-      font-size: 1.1rem;
-      color: #333;
-      margin-bottom: .5rem;
-    }
-
-    .options {
-      display: flex;
-      gap: .75rem;
-      flex-wrap: wrap;
-    }
-
-    .option {
-      text-align: center;
-      width: 70px;
-    }
-
-    .swatch {
-      width: 100%;
-      aspect-ratio: 1;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      cursor: pointer;
-      position: relative;
-      transition: border-color .2s;
-    }
-
-    .swatch:hover { border-color: #999; }
-    .swatch.selected { border-color: #006aff; }
-    .swatch.selected::after {
-      content: '✔';
-      position: absolute;
-      top: 4px;
-      right: 6px;
-      color: #006aff;
-      font-size: 1rem;
-    }
-
-    .option-label { margin-top: .3rem; font-size: .75rem; color: #444; }
-    .option-price { font-size: .7rem; color: #666; }
 
     .action-buttons {
       display: flex;
-      gap: .75rem;
-      margin-top: 2rem;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
     }
 
     .action-buttons button {
       flex: 1;
-      padding: .75rem;
-      font-size: .95rem;
+      padding: 0.75rem;
+      font-size: 0.85rem;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    .btn-save { background: #f0f0f0; color: #333; }
-    .btn-quote { background: #006aff; color: #fff; }
-
-    @media (max-width: 1024px) {
-      #configurator { grid-template-columns: 1fr; }
-      model-viewer { height: 50vh !important; min-height: 300px; }
+    .action-buttons button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    @media (max-width: 600px) {
-      model-viewer { height: 40vh !important; min-height: 200px; }
-      .dimensions { grid-template-columns: 1fr; }
+    .btn-save {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .btn-save:hover {
+      background: #e0e0e0;
+    }
+
+    .btn-quote {
+      background: #006aff;
+      color: #fff;
+    }
+
+    .btn-quote:hover {
+      background: #0056d6;
+    }
+
+    /* RESPONSIVE MOBILE */
+    @media (max-width: 768px) {
+      #configurator { 
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        gap: 0;
+        padding: 0;
+      }
+      
+      .top-section {
+        height: 25vh; /* RÉDUIT ENCORE PLUS: DE 30vh À 25vh */
+        min-height: 180px; /* RÉDUIT ENCORE PLUS: DE 200px À 180px */
+      }
+      
+      /* MODÈLE 3D EN PLEINE LARGEUR EN HAUT */
+      .viewer-card {
+        border-radius: 0;
+        order: 1;
+      }
+      
+      /* SECTION CONFIGURATION MOBILE */
+      .bottom-section {
+        border-radius: 0;
+        padding: 1rem;
+        order: 2;
+      }
+      
+      .config-header h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .config-header .current-price {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+      }
+      
+      .config-content {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 0.75rem;
+      }
+      
+      /* ÉNERGIE + PLAN EN COLONNE SUR MOBILE */
+      .energy-plan-section {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      
+      /* COLONNE GAUCHE MOBILE */
+      .left-column {
+        gap: 0.5rem;
+      }
+      
+      .energy-section {
+        padding: 0.5rem;
+      }
+      
+      .energy-section h3 {
+        font-size: 0.7rem;
+        margin-bottom: 0.4rem;
+      }
+      
+      .energy-visual {
+        gap: 0.4rem;
+        margin-bottom: 0.4rem;
+      }
+      
+      .house-icon {
+        width: 16px;
+        height: 16px;
+      }
+      
+      .rating-bar {
+        height: 6px;
+        padding: 0 3px;
+        font-size: 0.4rem;
+        clip-path: polygon(0 0, calc(100% - 3px) 0, 100% 50%, calc(100% - 3px) 100%, 0 100%);
+        width: 60px;
+        gap: 1px;
+      }
+      
+      .rating-bar.active {
+        width: 65px;
+        transform: translateX(2px);
+        box-shadow: 0 0 8px rgba(0, 106, 255, 0.3);
+      }
+      
+      .rating-label {
+        margin-right: 1px;
+        min-width: 6px;
+      }
+      
+      .energy-info {
+        font-size: 0.6rem;
+        margin-bottom: 0.15rem;
+      }
+      
+      .energy-bar {
+        height: 2px;
+        margin-bottom: 0.25rem;
+      }
+      
+      .energy-details {
+        font-size: 0.55rem;
+        line-height: 1.1;
+      }
+      
+      /* PLAN MOBILE */
+      .plan-section {
+        padding: 0.5rem;
+      }
+      
+      .plan-section h3 {
+        font-size: 0.7rem;
+        margin-bottom: 0.4rem;
+      }
+      
+      /* DIMENSIONS MOBILE */
+      .dimensions-section {
+        padding: 0.5rem;
+      }
+      
+      .dimensions-section h3 {
+        font-size: 0.7rem;
+        margin-bottom: 0.4rem;
+      }
+      
+      .dim-grid {
+        gap: 0.25rem;
+      }
+      
+      .dim-card {
+        padding: 0.4rem;
+        border-radius: 3px;
+      }
+      
+      .dim-card strong {
+        font-size: 0.7rem;
+      }
+      
+      .dim-card span {
+        font-size: 0.6rem;
+      }
+      
+      /* COLONNE DROITE MOBILE */
+      .right-column {
+        gap: 0.4rem;
+      }
+      
+      .config-grid {
+        gap: 0.4rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .config-group h3 {
+        font-size: 0.6rem;
+        margin-bottom: 0.2rem;
+      }
+      
+      .config-options {
+        gap: 0.15rem;
+      }
+      
+      .config-option {
+        width: 24px;
+      }
+      
+      .config-swatch {
+        width: 24px;
+        height: 24px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      
+      .config-swatch.selected::after {
+        top: 0px;
+        right: 1px;
+        font-size: 0.5rem;
+      }
+      
+      .config-option-label {
+        font-size: 0.5rem;
+        margin-top: 0.1rem;
+        line-height: 1;
+      }
+      
+      .config-option-price {
+        font-size: 0.45rem;
+        line-height: 1;
+      }
+      
+      /* PRIX MOBILE */
+      .price-section {
+        padding: 0.5rem;
+        margin-top: 0.3rem;
+      }
+      
+      .price-section h3 {
+        font-size: 0.7rem;
+        margin-bottom: 0.4rem;
+      }
+      
+      .price-item {
+        font-size: 0.6rem;
+        margin-bottom: 0.15rem;
+        padding: 0.15rem 0;
+      }
+      
+      .price-item:last-child {
+        font-size: 0.65rem;
+        margin-top: 0.2rem;
+        padding-top: 0.2rem;
+        border-top: 1px solid #ccc;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        gap: 0.25rem;
+        margin-top: 0.4rem;
+      }
+      
+      .action-buttons button {
+        padding: 0.4rem;
+        font-size: 0.6rem;
+      }
     }
 
     @keyframes drift {
@@ -391,226 +700,290 @@
     <span class="fixed-price-amount" id="fixed-price-amount">170 000 €</span>
   </div>
 
-    <div id="configurator">
-    <div class="viewer-card">
-      <model-viewer
-        id="mv"
-        src="MODERNHOME13.glb"
-        alt="Maison Modern'home"
-        exposure="0.8"
-        shadow-intensity="2.5"
-        shadow-softness="1"
-       camera-controls
-min-camera-orbit="-Infinity 0deg auto"
-max-camera-orbit="Infinity 90deg auto"
-camera-target="0m 1m 0m"
-interaction-prompt="none">
-      </model-viewer>
-      
-      <div id="energy-summary">
-        <h3>Performance énergétique estimée</h3>
-        <div id="energy-visual">
-          <div class="house-container">
-            <svg class="house-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path
-                class="house-body"
-                d="M20,70 L20,40 L50,15 L80,40 L80,70"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="6"
-                stroke-linejoin="round"
-                stroke-linecap="round"/>
-              <path
-                d="M65,30 L65,20"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="6"
-                stroke-linecap="round"/>
-              <g class="smoke">
-                <path
-                  d="M63,17 C67,15 69,13 67,11 M67,12 C71,10 73,8 71,6"
-                  fill="none"
-                  stroke="#999"
-                  stroke-width="1"
-                  stroke-linecap="round"/>
-              </g>
-            </svg>
-          </div>
-
-          <div class="energy-rating-scale">
-            <div class="rating-bar rating-A-plus" data-rating="A+">
-              <span class="rating-label">A+</span>
-              <span class="rating-value">≤50</span>
-            </div>
-            <div class="rating-bar rating-A" data-rating="A">
-              <span class="rating-label">A</span>
-              <span class="rating-value">51-90</span>
-            </div>
-            <div class="rating-bar rating-B" data-rating="B">
-              <span class="rating-label">B</span>
-              <span class="rating-value">91-150</span>
-            </div>
-            <div class="rating-bar rating-C" data-rating="C">
-              <span class="rating-label">C</span>
-              <span class="rating-value">151-230</span>
-            </div>
-            <div class="rating-bar rating-D" data-rating="D">
-              <span class="rating-label">D</span>
-              <span class="rating-value">231-330</span>
-            </div>
-            <div class="rating-bar rating-E" data-rating="E">
-              <span class="rating-label">E</span>
-              <span class="rating-value">331-450</span>
-            </div>
-            <div class="rating-bar rating-F" data-rating="F">
-              <span class="rating-label">F</span>
-              <span class="rating-value">451-590</span>
-            </div>
-            <div class="rating-bar rating-G" data-rating="G">
-              <span class="rating-label">G</span>
-              <span class="rating-value">>590</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="energy-line">
-          <span>Consommation :</span>
-          <span id="energy-value">120 kWh/an</span>
-        </div>
-        <div class="energy-line">
-          <span>Classe :</span>
-          <span id="energy-class">B</span>
-        </div>
-        <div class="energy-bar">
-          <div id="energy-bar-fill"></div>
-        </div>
-        <h4 style="margin-top:1rem;font-size:.9rem;color:#555">Détail par matériau</h4>
-        <div id="energy-details"><i>Configuration de base</i></div>
-      </div>
-
-      <div class="dimensions">
-        <div class="dim-card"><strong>92 m²</strong><span>Surface</span></div>
-        <div class="dim-card"><strong>3 Ch</strong><span>Chambres</span></div>
-        <div class="dim-card"><strong>2 SdE</strong><span>Salles d'eau</span></div>
+  <div id="configurator">
+    <!-- TOP SECTION - MODÈLE 3D UNIQUEMENT -->
+    <div class="top-section">
+      <div class="viewer-card">
+        <model-viewer
+          id="mv"
+          src="MODERNHOME13.glb"
+          alt="Maison Modern'home"
+          exposure="1"
+          shadow-intensity="2.5"
+          shadow-softness="1"
+          camera-controls
+          min-camera-orbit="-Infinity 0deg auto"
+          max-camera-orbit="Infinity 90deg auto"
+          camera-target="0m 1m 0m"
+          interaction-prompt="none">
+        </model-viewer>
       </div>
     </div>
 
-    <div class="controls">
-      <h2>Configuration Modern'home</h2>
-      <div class="current-price" id="total-price">170 000 €</div>
-
-      <div class="group" data-cat="Menuiserie">
-        <h3>Menuiserie ALU</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#2C2C2C" data-color="#2C2C2C" data-cost="2499"></div>
-            <div class="option-label">Anthracite</div>
-            <div class="option-price">+2 499 €</div>
-          </div>
-        </div>
+    <!-- BOTTOM SECTION - CONFIGURATION -->
+    <div class="bottom-section">
+      <!-- TITRE ET PRIX -->
+      <div class="config-header">
+        <h2>Configuration Modern'home</h2>
+        <div class="current-price" id="total-price">170 000 €</div>
       </div>
 
-      <div class="group" data-cat="Gouttiere">
-        <h3>Gouttière et descente</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
+      <div class="config-content">
+        <!-- COLONNE GAUCHE - ÉNERGIE + PLAN + INFOS MAISON -->
+        <div class="left-column">
+          <!-- ÉNERGIE + PLAN CÔTE À CÔTE -->
+          <div class="energy-plan-section">
+            <!-- SECTION ÉNERGIE -->
+            <div class="energy-section">
+              <h3>Performance énergétique</h3>
+              <div class="energy-visual">
+                <div class="house-icon">
+                  <svg class="house-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      class="house-body"
+                      d="M20,70 L20,40 L50,15 L80,40 L80,70"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="6"
+                      stroke-linejoin="round"
+                      stroke-linecap="round"/>
+                    <path
+                      d="M65,30 L65,20"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="6"
+                      stroke-linecap="round"/>
+                    <g class="smoke">
+                      <path
+                        d="M63,17 C67,15 69,13 67,11 M67,12 C71,10 73,8 71,6"
+                        fill="none"
+                        stroke="#999"
+                        stroke-width="1"
+                        stroke-linecap="round"/>
+                    </g>
+                  </svg>
+                </div>
+                <div class="rating-scale">
+                  <div class="rating-bar rating-A-plus" data-rating="A+">
+                    <span class="rating-label">A+</span>
+                    <span>≤50</span>
+                  </div>
+                  <div class="rating-bar rating-A" data-rating="A">
+                    <span class="rating-label">A</span>
+                    <span>51-90</span>
+                  </div>
+                  <div class="rating-bar rating-B" data-rating="B">
+                    <span class="rating-label">B</span>
+                    <span>91-150</span>
+                  </div>
+                  <div class="rating-bar rating-C" data-rating="C">
+                    <span class="rating-label">C</span>
+                    <span>151-230</span>
+                  </div>
+                  <div class="rating-bar rating-D" data-rating="D">
+                    <span class="rating-label">D</span>
+                    <span>231-330</span>
+                  </div>
+                  <div class="rating-bar rating-E" data-rating="E">
+                    <span class="rating-label">E</span>
+                    <span>331-450</span>
+                  </div>
+                  <div class="rating-bar rating-F" data-rating="F">
+                    <span class="rating-label">F</span>
+                    <span>451-590</span>
+                  </div>
+                  <div class="rating-bar rating-G" data-rating="G">
+                    <span class="rating-label">G</span>
+                    <span>>590</span>
+                  </div>
+                </div>
+              </div>
+              <div class="energy-info">
+                <span>Consommation :</span>
+                <span id="energy-value">120 kWh/an</span>
+              </div>
+              <div class="energy-info">
+                <span>Classe :</span>
+                <span id="energy-class">B</span>
+              </div>
+              <div class="energy-bar">
+                <div id="energy-bar-fill" style="width: 20%; background: #4caf50; height: 100%;"></div>
+              </div>
+              <div class="energy-details">
+                <span id="energy-details">Configuration de base</span>
+              </div>
+            </div>
+
+            <!-- SECTION PLAN À CÔTÉ DE L'ÉNERGIE -->
+            <div class="plan-section">
+              <h3>Plan schématique</h3>
+              <div class="plan-content">
+                <img 
+                  src="./PLAN4.png" 
+                  alt="Plan schématique de la maison"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                />
+                <div class="plan-fallback" style="display: none;">
+                  <div class="plan-fallback-box">Plan</div>
+                  <span>Plan schématique</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- INFOS MAISON -->
+          <div class="dimensions-section">
+            <h3>Informations</h3>
+            <div class="dim-grid">
+              <div class="dim-card">
+                <strong>85 m²</strong>
+                <span>Surface</span>
+              </div>
+              <div class="dim-card">
+                <strong>3 Ch</strong>
+                <span>Chambres</span>
+              </div>
+              <div class="dim-card">
+                <strong>2 SdE</strong>
+                <span>Salles d'eau</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+        
+        <!-- COLONNE DROITE - CONFIGURATION -->
+        <div class="right-column">
+          <!-- GRILLE 3x2 POUR LES CONFIGURATIONS -->
+          <div class="config-grid">
+            
+            
+            <!-- Menuiserie -->
+            <div class="config-group" data-cat="Menuiserie">
+              <h3>Menuiserie</h3>
+              <div class="config-options">
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+                  <div class="config-option-label">Blanc</div>
+                  <div class="config-option-price">+0€</div>
+                </div>
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#2C2C2C" data-color="#2C2C2C" data-cost="2499"></div>
+                  <div class="config-option-label">Anthracite</div>
+                  <div class="config-option-price">+2499€</div>
+                </div>
+              </div>
+            </div>
 
-      
+            <!-- Gouttière -->
+            <div class="config-group" data-cat="Gouttiere">
+              <h3>Gouttière</h3>
+              <div class="config-options">
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+                  <div class="config-option-label">Blanc</div>
+                  <div class="config-option-price">+0€</div>
+                </div>
+              </div>
+            </div>
 
-      <div class="group" data-cat="Murs">
-        <h3>Peinture (mur extérieur)</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+0 €</div>
+            <!-- Pergola -->
+            <div class="config-group" data-cat="Pergola">
+              <h3>Pergola</h3>
+              <div class="config-options">
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
+                  <div class="config-option-label">Blanc</div>
+                  <div class="config-option-price">+8500€</div>
+                </div>
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#2C2C2C" data-color="#2C2C2C" data-cost="9500"></div>
+                  <div class="config-option-label">Anthracite</div>
+                  <div class="config-option-price">+9500€</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Peinture -->
+            <div class="config-group" data-cat="Murs">
+              <h3>Peinture</h3>
+              <div class="config-options">
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+                  <div class="config-option-label">Blanc</div>
+                  <div class="config-option-price">+0€</div>
+                </div>
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
+                  <div class="config-option-label">Beige</div>
+                  <div class="config-option-price">+999€</div>
+                </div>
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color: #E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
+                  <div class="config-option-label">Ocre</div>
+                  <div class="config-option-price">+1499€</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tôle -->
+            <div class="config-group" data-cat="Toit">
+              <h3>Tôle</h3>
+              <div class="config-options">
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
+                  <div class="config-option-label">Bleu</div>
+                  <div class="config-option-price">+0€</div>
+                </div>
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#9BA1A9" data-color="#9BA1A9" data-cost="0"></div>
+                  <div class="config-option-label">Gris</div>
+                  <div class="config-option-price">+0€</div>
+                </div>
+                <div class="config-option">
+                  <div class="config-swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800"></div>
+                  <div class="config-option-label">Rouge</div>
+                  <div class="config-option-price">+1800€</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
-            <div class="option-label">Beige WES</div>
-            <div class="option-price">+999 €</div>
+
+          <!-- Prix et boutons -->
+          <div class="price-section">
+            <h3>Récapitulatif</h3>
+            <div id="price-breakdown">
+              <div class="price-item">
+                <span>Prix de base</span>
+                <span>170 000 €</span>
+              </div>
+              <div class="price-item">
+                <span>Total TTC</span>
+                <span id="total-price-display">170 000 €</span>
+              </div>
+            </div>
           </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#E6C7B1" data-color="#E6C7B1" data-cost="1499"></div>
-            <div class="option-label">Ocre Mojave</div>
-            <div class="option-price">+1 499 €</div>
+
+          <div class="action-buttons">
+            <button class="btn-save">Enregistrer</button>
+            <button class="btn-quote">Demander un devis</button>
           </div>
         </div>
-      </div>
- <div class="group" data-cat="Pergola">
-        <h3>Pergola bioclimatique</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="8500"></div>
-            <div class="option-label">Blanc</div>
-            <div class="option-price">+8 500 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#2C2C2C" data-color="#2C2C2C" data-cost="9500"></div>
-            <div class="option-label">Anthracite</div>
-            <div class="option-price">+9 500 €</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="group" data-cat="Toit">
-        <h3>Tôle ondulée</h3>
-        <div class="options">
-          <div class="option">
-            <div class="swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
-            <div class="option-label">Bleu Ardoise</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#A6A6A6" data-color="#A6A6A6" data-cost="0"></div>
-            <div class="option-label">Gris Acier</div>
-            <div class="option-price">+0 €</div>
-          </div>
-          <div class="option">
-            <div class="swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800"></div>
-            <div class="option-label">Rouge Hibiscus</div>
-            <div class="option-price">+1 800 €</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="price-display">
-        <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Récapitulatif détaillé</h3>
-        <div id="price-breakdown">
-          <div class="price-item">
-            <span class="price-label">Prix de base</span>
-            <span class="price-value">170 000 €</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="action-buttons">
-        <button class="btn-save">Enregistrer la configuration</button>
-        <button class="btn-quote">Demander un devis</button>
       </div>
     </div>
   </div>
 
   <script>
+    // Configuration des impacts énergétiques par matériau et couleur
     const energyImpact = {
-      Toit: {'#1A2E3F':120,'#A6A6A6':150,'#C0392B':180},
-      Pergola: {'#FFFFFF':120,'#000000':150},
+      Bardage: {'#D4B285':120,'#8B4513':150,'#3D4C5C':180},
+      Toit: {'#1A2E3F':120,'#9BA1A9':150,'#C0392B':180},
+      Pergola: {'#FFFFFF':120,'#2C2C2C':150},
       Murs: {'#FFFFFF':120,'#D4C4A3':150,'#E6C7B1':180},
-      Menuiserie: {'#FFFFFF':120,'#000000':150},
+      Menuiserie: {'#FFFFFF':120,'#2C2C2C':150},
       Gouttiere: {'#FFFFFF':120}
     };
 
+    // Couleurs pour les classes énergétiques
     const ratingColors = {
       'Aplus': '#1B5E20',
       'A': '#2E7D32',
@@ -622,6 +995,7 @@ interaction-prompt="none">
       'G': '#F44336'
     };
 
+    // Fonction pour déterminer la classe énergétique
     function getEnergyClass(kwh) {
       if(kwh <= 50) return 'Aplus';
       if(kwh <= 90) return 'A';
@@ -633,9 +1007,36 @@ interaction-prompt="none">
       return 'G';
     }
 
+    // Mapping des catégories vers les noms des matériaux dans le modèle 3D
+    const targets = {
+      Bardage:    ['poutrine01'],
+      Menuiserie: ['porte','cadre porte fenetre','volets','encadrement'],
+      Gouttiere:  ['goutieres'],
+      Pergola:    ['poutres','volet_pergola'],
+      Murs:       ['murs'],
+      Toit:       ['toit1','toit contour']
+    };
+
+    // Conversion couleur hexadécimale vers RGBA
+    function hex2rgba(h) {
+      const v = parseInt(h.slice(1), 16);
+      return [
+        (v >> 16 & 255) / 255,
+        (v >> 8 & 255) / 255,
+        (v & 255) / 255,
+        1
+      ];
+    }
+
+    // Variables globales
+    let selection = {};
+    const basePrice = 170000;
+
+    // Initialisation au chargement de la page
     window.addEventListener('DOMContentLoaded', () => {
       const mv = document.getElementById('mv');
       const totalEl = document.getElementById('total-price');
+      const totalDisplayEl = document.getElementById('total-price-display');
       const fixedPriceEl = document.getElementById('fixed-price-amount');
       const energyEl = document.getElementById('energy-value');
       const classEl = document.getElementById('energy-class');
@@ -643,9 +1044,8 @@ interaction-prompt="none">
       const ratingBars = document.querySelectorAll('.rating-bar');
       const houseSvg = document.querySelector('.house-svg');
       const fixedPrice = document.getElementById('fixed-price');
-      const basePrice = 170000;
-      let selection = {};
 
+      // Gestion du prix fixe au scroll
       window.addEventListener('scroll', () => {
         if (window.scrollY > 100) {
           fixedPrice.classList.add('visible');
@@ -654,117 +1054,131 @@ interaction-prompt="none">
         }
       });
 
-      const targets = {
-        Menuiserie: ['menui','volets'],
-        Gouttiere: ['gouttiere'],
-        Pergola: ['pergola'],
-        Murs: ['murs'],
-        Toit: ['toit']
-      };
-
-      function hex2rgba(h) {
-        const v = parseInt(h.slice(1), 16);
-        return [
-          (v >> 16 & 255) / 255,
-          (v >> 8 & 255) / 255,
-          (v & 255) / 255,
-          1
-        ];
-      }
-
+      // Mise à jour de la performance énergétique
       function updateEnergy() {
         let sum = 120, lines = [];
         Object.entries(selection).forEach(([cat]) => {
-          const sw = document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
+          const sw = document.querySelector(`.config-group[data-cat="${cat}"] .config-swatch.selected`);
           if(!sw) return;
           const col = sw.dataset.color;
           const imp = energyImpact[cat][col] || 120;
           sum += (imp - 120);
           if (imp !== 120) {
-            lines.push(`• ${cat} – ${sw.nextElementSibling.textContent}: ${imp>120?'+':''}${imp-120} kWh/an`);
+            const label = sw.nextElementSibling?.textContent || '';
+            lines.push(`• ${cat} – ${label}: ${imp>120?'+':''}${imp-120} kWh/an`);
           }
         });
 
-        energyEl.textContent = `${sum} kWh/an`;
+        // Mise à jour de l'affichage énergétique
+        if (energyEl) energyEl.textContent = `${sum} kWh/an`;
+        
         const cls = getEnergyClass(sum);
-        classEl.textContent = cls === 'Aplus' ? 'A+' : cls;
-        barFill.style.width = `${Math.min(100, Math.round(sum/590*100))}%`;
+        const displayClass = cls === 'Aplus' ? 'A+' : cls;
+        
+        if (classEl) classEl.textContent = displayClass;
+        
+        const percentage = Math.min(100, Math.round(sum/590*100));
+        if (barFill) {
+          barFill.style.width = `${percentage}%`;
+          barFill.style.background = ratingColors[cls];
+        }
 
+        // Mise à jour des barres de notation avec effet lumineux
         ratingBars.forEach(bar => {
           const rating = bar.dataset.rating;
-          bar.classList.toggle('active',
-            (rating === 'A+' && cls === 'Aplus') || rating === cls);
+          const isActive = (rating === 'A+' && cls === 'Aplus') || rating === cls;
+          bar.classList.toggle('active', isActive);
         });
 
-        houseSvg.style.color = ratingColors[cls];
-        document.getElementById('energy-details').innerHTML =
-          lines.length ? lines.join('<br>') : '<i>Configuration de base</i>';
+        // Changement de couleur de l'icône maison
+        if (houseSvg) houseSvg.style.color = ratingColors[cls];
+        
+        // Mise à jour des détails énergétiques
+        const detailsEl = document.getElementById('energy-details');
+        if (detailsEl) {
+          detailsEl.textContent = lines.length ? lines.join(', ') : 'Configuration de base';
+        }
       }
 
+      // Mise à jour du récapitulatif des prix
       function updatePriceBreakdown() {
         let totalOptions = 0;
-        const items = ['<div class="price-item"><span class="price-label">Prix de base</span><span class="price-value">170 000 €</span></div>'];
+        const items = ['<div class="price-item"><span>Prix de base</span><span>170 000 €</span></div>'];
         
         Object.entries(selection).forEach(([cat]) => {
-          const sw = document.querySelector(`.group[data-cat="${cat}"] .swatch.selected`);
+          const sw = document.querySelector(`.config-group[data-cat="${cat}"] .config-swatch.selected`);
           if(!sw) return;
           const cost = +sw.dataset.cost;
           if(cost > 0) {
             totalOptions += cost;
-            const label = sw.nextElementSibling.textContent;
+            const label = sw.nextElementSibling?.textContent || '';
             items.push(`
               <div class="price-item">
-                <span class="price-label">${cat} - ${label}</span>
-                <span class="price-value">+${cost.toLocaleString('fr-FR')} €</span>
+                <span>${cat} - ${label}</span>
+                <span>+${cost.toLocaleString('fr-FR')} €</span>
               </div>
             `);
           }
         });
 
         items.push(`
-          <div class="price-item" style="margin-top: 1rem; border-top: 2px solid #e2e8f0; padding-top: 1rem;">
-            <span class="price-label">Total des options</span>
-            <span class="price-value">+${totalOptions.toLocaleString('fr-FR')} €</span>
-          </div>
-          <div class="price-item" style="font-weight: bold; font-size: 1.1em;">
-            <span class="price-label">Total TTC</span>
-            <span class="price-value">${(basePrice + totalOptions).toLocaleString('fr-FR')} €</span>
+          <div class="price-item">
+            <span>Total TTC</span>
+            <span>${(basePrice + totalOptions).toLocaleString('fr-FR')} €</span>
           </div>
         `);
 
-        document.getElementById('price-breakdown').innerHTML = items.join('');
-        document.getElementById('fixed-price-amount').textContent = 
-          `${(basePrice + totalOptions).toLocaleString('fr-FR')} €`;
-        document.getElementById('total-price').textContent = 
-          `${(basePrice + totalOptions).toLocaleString('fr-FR')} €`;
+        // Mise à jour de l'affichage des prix
+        const breakdownEl = document.getElementById('price-breakdown');
+        if (breakdownEl) breakdownEl.innerHTML = items.join('');
+        
+        const totalPrice = `${(basePrice + totalOptions).toLocaleString('fr-FR')} €`;
+        if (fixedPriceEl) fixedPriceEl.textContent = totalPrice;
+        if (totalEl) totalEl.textContent = totalPrice;
+        if (totalDisplayEl) totalDisplayEl.textContent = totalPrice;
       }
 
-      mv.addEventListener('load', () => {
-        const mats = mv.model.materials;
-        document.querySelectorAll('.group').forEach(group => {
+      // Configuration des gestionnaires d'événements pour les échantillons
+      function setupSwatchHandlers() {
+        document.querySelectorAll('.config-group').forEach(group => {
           const cat = group.dataset.cat;
           const frags = targets[cat] || [];
-          group.querySelectorAll('.swatch').forEach(sw => {
+          
+          group.querySelectorAll('.config-swatch').forEach(sw => {
             sw.addEventListener('click', () => {
-              group.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+              // Retirer la sélection de tous les échantillons de cette catégorie
+              document.querySelectorAll(`.config-group[data-cat="${cat}"] .config-swatch`).forEach(x => x.classList.remove('selected'));
+              
+              // Ajouter la sélection à l'échantillon cliqué
               sw.classList.add('selected');
               selection[cat] = +sw.dataset.cost;
               updatePriceBreakdown();
+              
+              // Mise à jour du modèle 3D
               const rgba = hex2rgba(sw.dataset.color);
-              mats.forEach(m => {
-                const name = m.name.toLowerCase();
-                if(frags.some(f => name.includes(f))) {
-                  m.pbrMetallicRoughness.setBaseColorFactor(rgba);
-                  m.pbrMetallicRoughness.setMetallicFactor(1);
-                  m.pbrMetallicRoughness.setRoughnessFactor(1);
-                }
-              });
+              if (mv.model && mv.model.materials) {
+                mv.model.materials.forEach(m => {
+                  const name = m.name.toLowerCase();
+                  if(frags.some(f => name.includes(f))) {
+                    m.pbrMetallicRoughness.setBaseColorFactor(rgba);
+                    m.pbrMetallicRoughness.setMetallicFactor(1);
+                    m.pbrMetallicRoughness.setRoughnessFactor(1);
+                  }
+                });
+              }
               updateEnergy();
             });
           });
-          const first = group.querySelector('.swatch');
+          
+          // Auto-sélection de la première option
+          const first = group.querySelector('.config-swatch');
           if(first) first.click();
         });
+      }
+
+      // Initialisation après le chargement du modèle 3D
+      mv.addEventListener('load', () => {
+        setupSwatchHandlers();
         updateEnergy();
       });
     });
