@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Configuration Tradi'home</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <title>Configuration Modern'home</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer@1.12.0/dist/model-viewer.min.js"></script>
   <style>
     * { box-sizing:border-box; margin:0; padding:0 }
     html, body { height:100%; font-family:sans-serif; background:#f0f2f5 }
@@ -856,7 +856,6 @@
           <!-- GRILLE 3x2 POUR LES CONFIGURATIONS -->
           <div class="config-grid">
             
-            
             <!-- Menuiserie -->
             <div class="config-group" data-cat="Menuiserie">
               <h3>Menuiserie</h3>
@@ -930,13 +929,13 @@
               <h3>Tôle</h3>
               <div class="config-options">
                 <div class="config-option">
-                  <div class="config-swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
-                  <div class="config-option-label">Bleu ardoise</div>
+                  <div class="config-swatch" style="background-color:#9BA1A9" data-color="#9BA1A9" data-cost="0"></div>
+                  <div class="config-option-label">Gris</div>
                   <div class="config-option-price">+0€</div>
                 </div>
                 <div class="config-option">
-                  <div class="config-swatch" style="background-color:#9BA1A9" data-color="#9BA1A9" data-cost="0"></div>
-                  <div class="config-option-label">Gris</div>
+                  <div class="config-swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
+                  <div class="config-option-label">Bleu ardoise</div>
                   <div class="config-option-price">+0€</div>
                 </div>
                 <div class="config-option">
@@ -954,11 +953,11 @@
             <div id="price-breakdown">
               <div class="price-item">
                 <span>Prix de base</span>
-                <span>170 000 €</span>
+                <span>209 000 €</span>
               </div>
               <div class="price-item">
                 <span>Total TTC</span>
-                <span id="total-price-display">170 000 €</span>
+                <span id="total-price-display">209 000 €</span>
               </div>
             </div>
           </div>
@@ -974,12 +973,13 @@
 
   <script>
     // Configuration des impacts énergétiques par matériau et couleur
+    // Plus la couleur est foncée, plus l'impact énergétique est élevé
     const energyImpact = {
       Bardage: {'#D4B285':120,'#8B4513':150,'#3D4C5C':180},
-      Toit: {'#1A2E3F':120,'#9BA1A9':150,'#C0392B':180},
+      Toit: {'#9BA1A9':120,'#1A2E3F':150,'#C0392B':180}, // Gris (clair) < Bleu (moyen) < Rouge (foncé)
       Pergola: {'#FFFFFF':120,'#2C2C2C':150},
-      Murs: {'#FFFFFF':120,'#D4C4A3':150,'#E6C7B1':180},
-      Menuiserie: {'#FFFFFF':120,'#2C2C2C':150},
+      Murs: {'#FFFFFF':120,'#D4C4A3':150,'#E6C7B1':180}, // Blanc < Beige < Ocre
+      Menuiserie: {'#FFFFFF':120,'#2C2C2C':150}, // Blanc < Anthracite
       Gouttiere: {'#FFFFFF':120}
     };
 
@@ -1030,7 +1030,7 @@
 
     // Variables globales
     let selection = {};
-    const basePrice = 170000;
+    const basePrice = 209000;
 
     // Initialisation au chargement de la page
     window.addEventListener('DOMContentLoaded', () => {
@@ -1103,7 +1103,7 @@
       // Mise à jour du récapitulatif des prix
       function updatePriceBreakdown() {
         let totalOptions = 0;
-        const items = ['<div class="price-item"><span>Prix de base</span><span>170 000 €</span></div>'];
+        const items = ['<div class="price-item"><span>Prix de base</span><span>209 000 €</span></div>'];
         
         Object.entries(selection).forEach(([cat]) => {
           const sw = document.querySelector(`.config-group[data-cat="${cat}"] .config-swatch.selected`);
