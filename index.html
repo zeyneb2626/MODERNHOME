@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Configuration Modern'home</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer@1.12.0/dist/model-viewer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * { box-sizing:border-box; margin:0; padding:0 }
-    html, body { height:100%; font-family:sans-serif; background:#f0f2f5 }
+    html, body { min-height:100%; font-family:sans-serif; background:#f0f2f5 }
 
     .fixed-price {
       position: fixed;
@@ -60,6 +61,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       overflow: hidden;
       height: 100%;
+      position: relative;
     }
 
     model-viewer {
@@ -67,7 +69,57 @@
       height: 100%;
       background: #dddddd;
       pointer-events: all;
-      touch-action: none;
+      touch-action: pan-x pan-y; /* Permet la rotation du modèle mais empêche le scroll de la page */
+    }
+
+    /* FLÈCHES D'INDICATION ROTATION STYLE VOLKSWAGEN */
+    .rotation-indicators {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.8;
+      animation: fadeInOut 4s infinite;
+    }
+
+    .rotation-hint {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px 20px;
+      border-radius: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      font-size: 0.8rem;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .rotation-arrows {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rotation-arrow {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #1976d2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #1976d2;
+      background: white;
+      font-weight: bold;
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
     }
 
     /* BOTTOM SECTION - CONFIGURATION */
@@ -411,10 +463,39 @@
       border-top: 2px solid #ccc;
     }
 
+    /* SECTION EMAIL + BOUTONS */
+    .email-section {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      margin-top: 0.75rem;
+    }
+
+    .email-input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .email-input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .email-input:focus {
+      outline: none;
+      border-color: #006aff;
+      box-shadow: 0 0 0 3px rgba(0, 106, 255, 0.1);
+    }
+
     .action-buttons {
       display: flex;
       gap: 0.75rem;
-      margin-top: 0.75rem;
     }
 
     .action-buttons button {
@@ -433,12 +514,12 @@
     }
 
     .btn-save {
-      background: #f0f0f0;
+      background: #D4C4A3;
       color: #333;
     }
 
     .btn-save:hover {
-      background: #e0e0e0;
+      background: #C4B493;
     }
 
     .btn-quote {
@@ -450,25 +531,56 @@
       background: #0056d6;
     }
 
+    .btn-quote:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-quote.loading {
+      background: #999;
+      cursor: wait;
+    }
+
+    .btn-quote.loading::after {
+      content: ' ⏳';
+    }
+
     /* RESPONSIVE MOBILE */
     @media (max-width: 768px) {
       #configurator { 
         display: flex;
         flex-direction: column;
-        height: auto;
+        min-height: 100vh;
         gap: 0;
         padding: 0;
       }
       
       .top-section {
-        height: 25vh; /* RÉDUIT ENCORE PLUS: DE 30vh À 25vh */
-        min-height: 180px; /* RÉDUIT ENCORE PLUS: DE 200px À 180px */
+        height: 35vh;
+        min-height: 250px;
       }
       
       /* MODÈLE 3D EN PLEINE LARGEUR EN HAUT */
       .viewer-card {
         border-radius: 0;
         order: 1;
+      }
+      
+      .rotation-indicators {
+        bottom: 10px;
+      }
+      
+      .rotation-hint {
+        padding: 8px 16px;
+        font-size: 0.7rem;
+        gap: 8px;
+      }
+      
+      .rotation-arrow {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
       }
       
       /* SECTION CONFIGURATION MOBILE */
@@ -667,10 +779,26 @@
         border-top: 1px solid #ccc;
       }
       
+      /* EMAIL + BOUTONS MOBILE */
+      .email-section {
+        padding: 0.5rem;
+        margin-top: 0.3rem;
+      }
+      
+      .email-input-group {
+        flex-direction: column;
+        gap: 0.25rem;
+        margin-bottom: 0.4rem;
+      }
+      
+      .email-input {
+        padding: 0.4rem;
+        font-size: 0.6rem;
+      }
+      
       .action-buttons {
         flex-direction: column;
         gap: 0.25rem;
-        margin-top: 0.4rem;
       }
       
       .action-buttons button {
@@ -708,15 +836,27 @@
           id="mv"
           src="MODERNHOME61.glb"
           alt="Maison Modern'home"
+          camera-orbit="15deg 75deg 12m"
+          field-of-view="45deg"
           exposure="0.6"
           shadow-intensity="2.5"
           shadow-softness="1"
           camera-controls
-          min-camera-orbit="-Infinity 0deg auto"
-          max-camera-orbit="Infinity 90deg auto"
+          min-camera-orbit="-Infinity 0deg 8m"
+          max-camera-orbit="Infinity 90deg 20m"
           camera-target="0m 1m 0m"
           interaction-prompt="none">
         </model-viewer>
+        <!-- Flèches d'indication style Volkswagen -->
+        <div class="rotation-indicators">
+          <div class="rotation-hint">
+            <div class="rotation-arrows">
+              <div class="rotation-arrow">◀</div>
+              <div class="rotation-arrow">▶</div>
+            </div>
+            <span>Faites glisser pour faire tourner</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -861,9 +1001,9 @@
               <h3>Menuiserie</h3>
               <div class="config-options">
                 <div class="config-option">
-                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0" data-base="true"></div>
                   <div class="config-option-label">Blanc</div>
-                  <div class="config-option-price">+0€</div>
+                  <div class="config-option-price">Base</div>
                 </div>
                 <div class="config-option">
                   <div class="config-swatch" style="background-color:#2C2C2C" data-color="#2C2C2C" data-cost="2499"></div>
@@ -878,9 +1018,9 @@
               <h3>Gouttière</h3>
               <div class="config-options">
                 <div class="config-option">
-                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0" data-base="true"></div>
                   <div class="config-option-label">Blanc</div>
-                  <div class="config-option-price">+0€</div>
+                  <div class="config-option-price">Base</div>
                 </div>
               </div>
             </div>
@@ -907,9 +1047,9 @@
               <h3>Peinture</h3>
               <div class="config-options">
                 <div class="config-option">
-                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0"></div>
+                  <div class="config-swatch" style="background-color:#FFFFFF" data-color="#FFFFFF" data-cost="0" data-base="true"></div>
                   <div class="config-option-label">Blanc</div>
-                  <div class="config-option-price">+0€</div>
+                  <div class="config-option-price">Base</div>
                 </div>
                 <div class="config-option">
                   <div class="config-swatch" style="background-color:#D4C4A3" data-color="#D4C4A3" data-cost="999"></div>
@@ -929,14 +1069,14 @@
               <h3>Tôle</h3>
               <div class="config-options">
                 <div class="config-option">
-                  <div class="config-swatch" style="background-color:#9BA1A9" data-color="#9BA1A9" data-cost="0"></div>
+                  <div class="config-swatch" style="background-color:#9BA1A9" data-color="#9BA1A9" data-cost="0" data-base="true"></div>
                   <div class="config-option-label">Gris</div>
-                  <div class="config-option-price">+0€</div>
+                  <div class="config-option-price">Base</div>
                 </div>
                 <div class="config-option">
                   <div class="config-swatch" style="background-color:#1A2E3F" data-color="#1A2E3F" data-cost="0"></div>
                   <div class="config-option-label">Bleu ardoise</div>
-                  <div class="config-option-price">+0€</div>
+                  <div class="config-option-price">Base</div>
                 </div>
                 <div class="config-option">
                   <div class="config-swatch" style="background-color:#C0392B" data-color="#C0392B" data-cost="1800"></div>
@@ -962,9 +1102,21 @@
             </div>
           </div>
 
-          <div class="action-buttons">
-            <button class="btn-save">Enregistrer</button>
-            <button class="btn-quote">Demander un devis</button>
+          <!-- Section Email + Boutons -->
+          <div class="email-section">
+            <div class="email-input-group">
+              <input 
+                type="email" 
+                id="user-email" 
+                class="email-input" 
+                placeholder="Votre email pour recevoir le devis"
+                required
+              />
+            </div>
+            <div class="action-buttons">
+              <button class="btn-save" onclick="saveConfiguration()">Enregistrer PDF</button>
+              <button class="btn-quote" id="quote-btn" onclick="requestQuote()">Demander un devis</button>
+            </div>
           </div>
         </div>
       </div>
@@ -972,6 +1124,10 @@
   </div>
 
   <script>
+    // ⚙️ CONFIGURATION WEBHOOK
+    // Remplacez cette URL par votre webhook réel
+    const WEBHOOK_URL = 'https://votre-webhook.com/api/devis';
+    
     // Configuration des impacts énergétiques par matériau et couleur
     // Plus la couleur est foncée, plus l'impact énergétique est élevé
     const energyImpact = {
@@ -1032,6 +1188,270 @@
     let selection = {};
     const basePrice = 209000;
 
+    // 📧 FONCTION POUR ENVOYER LE DEVIS VIA WEBHOOK
+    async function sendQuoteToWebhook(quoteData) {
+      try {
+        const response = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(quoteData)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return { success: true, data: result };
+      } catch (error) {
+        console.error('Erreur lors de l\'envoi du webhook:', error);
+        return { success: false, error: error.message };
+      }
+    }
+
+    // 📋 FONCTION POUR COLLECTER TOUTES LES DONNÉES DE CONFIGURATION
+    function getConfigurationData() {
+      const emailInput = document.getElementById('user-email');
+      const energyValue = document.getElementById('energy-value').textContent;
+      const energyClass = document.getElementById('energy-class').textContent;
+      
+      // Collecter les options sélectionnées
+      const selectedOptions = {};
+      let totalOptions = 0;
+      
+      document.querySelectorAll('.config-group').forEach(group => {
+        const category = group.dataset.cat;
+        const selectedSwatch = group.querySelector('.config-swatch.selected');
+        
+        if (selectedSwatch) {
+          const label = selectedSwatch.nextElementSibling.textContent;
+          const cost = parseInt(selectedSwatch.dataset.cost);
+          const color = selectedSwatch.dataset.color;
+          const isBase = selectedSwatch.dataset.base === 'true';
+          
+          selectedOptions[category] = {
+            label: label,
+            cost: cost,
+            color: color,
+            isBase: isBase
+          };
+          
+          if (cost > 0) {
+            totalOptions += cost;
+          }
+        }
+      });
+
+      return {
+        // Informations client
+        email: emailInput.value.trim(),
+        timestamp: new Date().toISOString(),
+        
+        // Informations maison
+        houseInfo: {
+          surface: '85 m²',
+          bedrooms: 3,
+          bathrooms: 2,
+          model: 'Modern\'home'
+        },
+        
+        // Configuration sélectionnée
+        configuration: selectedOptions,
+        
+        // Performance énergétique
+        energyPerformance: {
+          consumption: energyValue,
+          class: energyClass,
+          details: document.getElementById('energy-details').textContent
+        },
+        
+        // Prix
+        pricing: {
+          basePrice: basePrice,
+          optionsTotal: totalOptions,
+          totalPrice: basePrice + totalOptions,
+          currency: 'EUR'
+        },
+        
+        // Métadonnées
+        metadata: {
+          source: 'Configurateur Modern\'home',
+          userAgent: navigator.userAgent,
+          url: window.location.href
+        }
+      };
+    }
+
+    // 🚀 FONCTION POUR DEMANDER UN DEVIS (AVEC WEBHOOK)
+    async function requestQuote() {
+      const emailInput = document.getElementById('user-email');
+      const quoteBtn = document.getElementById('quote-btn');
+      const email = emailInput.value.trim();
+      
+      // Validation de l'email
+      if (!email) {
+        alert('Veuillez saisir votre email pour recevoir le devis.');
+        emailInput.focus();
+        return;
+      }
+      
+      if (!isValidEmail(email)) {
+        alert('Veuillez saisir un email valide.');
+        emailInput.focus();
+        return;
+      }
+      
+      // Désactiver le bouton et afficher le loading
+      quoteBtn.disabled = true;
+      quoteBtn.classList.add('loading');
+      quoteBtn.textContent = 'Envoi en cours...';
+      
+      try {
+        // Collecter toutes les données de configuration
+        const configData = getConfigurationData();
+        
+        // Envoyer via webhook
+        const result = await sendQuoteToWebhook(configData);
+        
+        if (result.success) {
+          alert(`✅ Devis envoyé avec succès à ${email} !\n\nVous recevrez votre devis personnalisé dans quelques minutes.`);
+          
+          // Optionnel: vider le champ email après envoi réussi
+          // emailInput.value = '';
+        } else {
+          throw new Error(result.error || 'Erreur inconnue');
+        }
+        
+      } catch (error) {
+        console.error('Erreur lors de l\'envoi du devis:', error);
+        alert(`❌ Erreur lors de l'envoi du devis.\n\nVeuillez réessayer ou nous contacter directement.\n\nDétails: ${error.message}`);
+      } finally {
+        // Réactiver le bouton
+        quoteBtn.disabled = false;
+        quoteBtn.classList.remove('loading');
+        quoteBtn.textContent = 'Demander un devis';
+      }
+    }
+
+    // Fonction de validation email
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Fonction pour enregistrer la configuration en PDF
+    function saveConfiguration() {
+      try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF();
+        
+        // Titre principal
+        pdf.setFontSize(20);
+        pdf.setTextColor(0, 106, 255);
+        pdf.text('Configuration Modern\'home', 105, 20, { align: 'center' });
+        
+        // Date
+        pdf.setFontSize(10);
+        pdf.setTextColor(100, 100, 100);
+        const today = new Date().toLocaleDateString('fr-FR');
+        pdf.text(`Générée le ${today}`, 105, 30, { align: 'center' });
+        
+        let yPos = 50;
+        
+        // Informations générales
+        pdf.setFontSize(14);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text('Informations générales', 20, yPos);
+        yPos += 10;
+        
+        pdf.setFontSize(10);
+        pdf.text('Surface: 85 m²', 20, yPos);
+        pdf.text('Chambres: 3', 80, yPos);
+        pdf.text('Salles d\'eau: 2', 140, yPos);
+        yPos += 20;
+        
+        // Configuration sélectionnée
+        pdf.setFontSize(14);
+        pdf.text('Configuration sélectionnée', 20, yPos);
+        yPos += 10;
+        
+        pdf.setFontSize(10);
+        
+        // Parcourir toutes les catégories
+        document.querySelectorAll('.config-group').forEach(group => {
+          const category = group.dataset.cat;
+          const selectedSwatch = group.querySelector('.config-swatch.selected');
+          
+          if (selectedSwatch) {
+            const label = selectedSwatch.nextElementSibling.textContent;
+            const cost = parseInt(selectedSwatch.dataset.cost);
+            
+            pdf.text(`${category}: ${label}`, 20, yPos);
+            if (cost > 0) {
+              pdf.text(`+${cost.toLocaleString('fr-FR')} €`, 120, yPos);
+            } else {
+              pdf.text('Base', 120, yPos);
+            }
+            yPos += 6;
+          }
+        });
+        
+        yPos += 15;
+        
+        // Performance énergétique
+        const energyValue = document.getElementById('energy-value').textContent;
+        const energyClass = document.getElementById('energy-class').textContent;
+        
+        pdf.setFontSize(14);
+        pdf.text('Performance énergétique', 20, yPos);
+        yPos += 10;
+        
+        pdf.setFontSize(10);
+        pdf.text(`Consommation: ${energyValue}`, 20, yPos);
+        pdf.text(`Classe énergétique: ${energyClass}`, 120, yPos);
+        yPos += 20;
+        
+        // Récapitulatif financier
+        pdf.setFontSize(14);
+        pdf.text('Récapitulatif financier', 20, yPos);
+        yPos += 10;
+        
+        pdf.setFontSize(10);
+        pdf.text(`Prix de base: ${basePrice.toLocaleString('fr-FR')} €`, 20, yPos);
+        yPos += 6;
+        
+        let totalOptions = 0;
+        document.querySelectorAll('.config-group').forEach(group => {
+          const selectedSwatch = group.querySelector('.config-swatch.selected');
+          if (selectedSwatch) {
+            const cost = parseInt(selectedSwatch.dataset.cost);
+            if (cost > 0) {
+              const category = group.dataset.cat;
+              const label = selectedSwatch.nextElementSibling.textContent;
+              totalOptions += cost;
+              pdf.text(`${category} - ${label}: +${cost.toLocaleString('fr-FR')} €`, 20, yPos);
+              yPos += 6;
+            }
+          }
+        });
+        
+        yPos += 10;
+        pdf.setFontSize(12);
+        pdf.setTextColor(0, 106, 255);
+        pdf.text(`TOTAL TTC: ${(basePrice + totalOptions).toLocaleString('fr-FR')} €`, 20, yPos);
+        
+        // Télécharger le PDF
+        pdf.save(`Configuration_Modernhome_${today.replace(/\//g, '-')}.pdf`);
+        
+      } catch (error) {
+        console.error('Erreur lors de la génération du PDF:', error);
+        alert('Erreur lors de la génération du PDF. Veuillez réessayer.');
+      }
+    }
+
     // Initialisation au chargement de la page
     window.addEventListener('DOMContentLoaded', () => {
       const mv = document.getElementById('mv');
@@ -1044,6 +1464,17 @@
       const ratingBars = document.querySelectorAll('.rating-bar');
       const houseSvg = document.querySelector('.house-svg');
       const fixedPrice = document.getElementById('fixed-price');
+
+      // Masquer les flèches après quelques secondes
+      setTimeout(() => {
+        const indicators = document.querySelector('.rotation-indicators');
+        if (indicators) {
+          indicators.style.opacity = '0';
+          setTimeout(() => {
+            indicators.style.display = 'none';
+          }, 1000);
+        }
+      }, 5000);
 
       // Gestion du prix fixe au scroll
       window.addEventListener('scroll', () => {
@@ -1103,7 +1534,7 @@
       // Mise à jour du récapitulatif des prix
       function updatePriceBreakdown() {
         let totalOptions = 0;
-        const items = ['<div class="price-item"><span>Prix de base</span><span>209 000 €</span></div>'];
+        const items = [`<div class="price-item"><span>Prix de base</span><span>${basePrice.toLocaleString('fr-FR')} €</span></div>`];
         
         Object.entries(selection).forEach(([cat]) => {
           const sw = document.querySelector(`.config-group[data-cat="${cat}"] .config-swatch.selected`);
@@ -1170,8 +1601,8 @@
             });
           });
           
-          // Auto-sélection de la première option
-          const first = group.querySelector('.config-swatch');
+          // Auto-sélection de la première option (configuration de base)
+          const first = group.querySelector('.config-swatch[data-base="true"]') || group.querySelector('.config-swatch');
           if(first) first.click();
         });
       }
