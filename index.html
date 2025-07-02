@@ -940,14 +940,14 @@
               </div>
               <div class="energy-info">
                 <span>Consommation :</span>
-                <span id="energy-value">120 kWh/an</span>
+                <span id="energy-value">45 kWh/an</span>
               </div>
               <div class="energy-info">
                 <span>Classe :</span>
-                <span id="energy-class">B</span>
+                <span id="energy-class">A+</span>
               </div>
               <div class="energy-bar">
-                <div id="energy-bar-fill" style="width: 20%; background: #4caf50; height: 100%;"></div>
+                <div id="energy-bar-fill" style="width: 8%; background: #1B5E20; height: 100%;"></div>
               </div>
               <div class="energy-details">
                 <span id="energy-details">Configuration de base</span>
@@ -1035,9 +1035,9 @@
                   <div class="config-option-price">Base</div>
                 </div>
                 <div class="config-option">
-                  <div class="config-swatch" style="background-color:#2C2C2C" data-color="#2C2C2C" data-cost="1000"></div>
+                  <div class="config-swatch" style="background-color:#2C2C2C" data-color="#2C2C2C" data-cost="9500"></div>
                   <div class="config-option-label">Anthracite</div>
-                  <div class="config-option-price">+1000€</div>
+                  <div class="config-option-price">+9500€</div>
                 </div>
               </div>
             </div>
@@ -1125,18 +1125,33 @@
 
   <script>
     // ⚙️ CONFIGURATION WEBHOOK
-    // Remplacez cette URL par votre webhook réel
     const WEBHOOK_URL = 'https://votre-webhook.com/api/devis';
     
     // Configuration des impacts énergétiques par matériau et couleur
-    // Plus la couleur est foncée, plus l'impact énergétique est élevé
+    // Ajustés pour avoir config de base en A+ (~45 kWh/an) et pire cas en B (~150 kWh/an max)
+    // Plus les couleurs sont foncées, plus l'impact énergétique est élevé
     const energyImpact = {
-      Bardage: {'#D4B285':120,'#8B4513':150,'#3D4C5C':180},
-      Toit: {'#9BA1A9':120,'#1A2E3F':150,'#C0392B':180}, // Gris (clair) < Bleu (moyen) < Rouge (foncé)
-      Pergola: {'#FFFFFF':120,'#2C2C2C':150},
-      Murs: {'#FFFFFF':120,'#D4C4A3':150,'#E6C7B1':180}, // Blanc < Beige < Ocre
-      Menuiserie: {'#FFFFFF':120,'#2C2C2C':150}, // Blanc < Anthracite
-      Gouttiere: {'#FFFFFF':120}
+      Toit: {
+        '#9BA1A9': 0,   // Gris clair (base A+) - pas d'impact
+        '#1A2E3F': 35,  // Bleu ardoise foncé (plus énergivore)
+        '#C0392B': 30   // Rouge Hibiscus (moyennement énergivore)
+      },
+      Pergola: {
+        '#FFFFFF': 0,   // Blanc (base A+) - pas d'impact
+        '#2C2C2C': 40   // Anthracite très foncé (très énergivore)
+      },
+      Murs: {
+        '#FFFFFF': 0,   // Blanc (base A+) - pas d'impact
+        '#D4C4A3': 15,  // Beige Wes (moyennement énergivore)
+        '#E6C7B1': 25   // Ocre Mojave (plus énergivore)
+      },
+      Menuiserie: {
+        '#FFFFFF': 0,   // Blanc (base A+) - pas d'impact
+        '#2C2C2C': 30   // Anthracite foncé (énergivore)
+      },
+      Gouttiere: {
+        '#FFFFFF': 0    // Blanc uniquement (base A+) - pas d'impact
+      }
     };
 
     // Couleurs pour les classes énergétiques
@@ -1164,8 +1179,8 @@
     }
 
     // Mapping des catégories vers les noms des matériaux dans le modèle 3D
+    // Adapté pour Modern'home
     const targets = {
-      Bardage:    ['poutrine01'],
       Menuiserie: ['menu2','menu3','menu4','menu5'],
       Gouttiere:  ['goutieres'],
       Pergola:    ['pergolat'],
@@ -1218,7 +1233,6 @@
       const energyValue = document.getElementById('energy-value').textContent;
       const energyClass = document.getElementById('energy-class').textContent;
       
-      // Collecter les options sélectionnées
       const selectedOptions = {};
       let totalOptions = 0;
       
@@ -1246,37 +1260,26 @@
       });
 
       return {
-        // Informations client
         email: emailInput.value.trim(),
         timestamp: new Date().toISOString(),
-        
-        // Informations maison
         houseInfo: {
           surface: '85 m²',
           bedrooms: 3,
           bathrooms: 2,
           model: 'Modern\'home'
         },
-        
-        // Configuration sélectionnée
         configuration: selectedOptions,
-        
-        // Performance énergétique
         energyPerformance: {
           consumption: energyValue,
           class: energyClass,
           details: document.getElementById('energy-details').textContent
         },
-        
-        // Prix
         pricing: {
           basePrice: basePrice,
           optionsTotal: totalOptions,
           totalPrice: basePrice + totalOptions,
           currency: 'EUR'
         },
-        
-        // Métadonnées
         metadata: {
           source: 'Configurateur Modern\'home',
           userAgent: navigator.userAgent,
@@ -1285,13 +1288,12 @@
       };
     }
 
-    // 🚀 FONCTION POUR DEMANDER UN DEVIS (AVEC WEBHOOK)
+    // 🚀 FONCTION POUR DEMANDER UN DEVIS
     async function requestQuote() {
       const emailInput = document.getElementById('user-email');
       const quoteBtn = document.getElementById('quote-btn');
       const email = emailInput.value.trim();
       
-      // Validation de l'email
       if (!email) {
         alert('Veuillez saisir votre email pour recevoir le devis.');
         emailInput.focus();
@@ -1304,23 +1306,16 @@
         return;
       }
       
-      // Désactiver le bouton et afficher le loading
       quoteBtn.disabled = true;
       quoteBtn.classList.add('loading');
       quoteBtn.textContent = 'Envoi en cours...';
       
       try {
-        // Collecter toutes les données de configuration
         const configData = getConfigurationData();
-        
-        // Envoyer via webhook
         const result = await sendQuoteToWebhook(configData);
         
         if (result.success) {
           alert(`✅ Devis envoyé avec succès à ${email} !\n\nVous recevrez votre devis personnalisé dans quelques minutes.`);
-          
-          // Optionnel: vider le champ email après envoi réussi
-          // emailInput.value = '';
         } else {
           throw new Error(result.error || 'Erreur inconnue');
         }
@@ -1329,7 +1324,6 @@
         console.error('Erreur lors de l\'envoi du devis:', error);
         alert(`❌ Erreur lors de l'envoi du devis.\n\nVeuillez réessayer ou nous contacter directement.\n\nDétails: ${error.message}`);
       } finally {
-        // Réactiver le bouton
         quoteBtn.disabled = false;
         quoteBtn.classList.remove('loading');
         quoteBtn.textContent = 'Demander un devis';
@@ -1348,12 +1342,10 @@
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF();
         
-        // Titre principal
         pdf.setFontSize(20);
         pdf.setTextColor(0, 106, 255);
         pdf.text('Configuration Modern\'home', 105, 20, { align: 'center' });
         
-        // Date
         pdf.setFontSize(10);
         pdf.setTextColor(100, 100, 100);
         const today = new Date().toLocaleDateString('fr-FR');
@@ -1361,7 +1353,6 @@
         
         let yPos = 50;
         
-        // Informations générales
         pdf.setFontSize(14);
         pdf.setTextColor(0, 0, 0);
         pdf.text('Informations générales', 20, yPos);
@@ -1373,14 +1364,12 @@
         pdf.text('Salles d\'eau: 2', 140, yPos);
         yPos += 20;
         
-        // Configuration sélectionnée
         pdf.setFontSize(14);
         pdf.text('Configuration sélectionnée', 20, yPos);
         yPos += 10;
         
         pdf.setFontSize(10);
         
-        // Parcourir toutes les catégories
         document.querySelectorAll('.config-group').forEach(group => {
           const category = group.dataset.cat;
           const selectedSwatch = group.querySelector('.config-swatch.selected');
@@ -1401,7 +1390,6 @@
         
         yPos += 15;
         
-        // Performance énergétique
         const energyValue = document.getElementById('energy-value').textContent;
         const energyClass = document.getElementById('energy-class').textContent;
         
@@ -1414,7 +1402,6 @@
         pdf.text(`Classe énergétique: ${energyClass}`, 120, yPos);
         yPos += 20;
         
-        // Récapitulatif financier
         pdf.setFontSize(14);
         pdf.text('Récapitulatif financier', 20, yPos);
         yPos += 10;
@@ -1443,7 +1430,6 @@
         pdf.setTextColor(0, 106, 255);
         pdf.text(`TOTAL TTC: ${(basePrice + totalOptions).toLocaleString('fr-FR')} €`, 20, yPos);
         
-        // Télécharger le PDF
         pdf.save(`Configuration_Modernhome_${today.replace(/\//g, '-')}.pdf`);
         
       } catch (error) {
@@ -1487,28 +1473,31 @@
 
       // Mise à jour de la performance énergétique
       function updateEnergy() {
-        let sum = 120, lines = [];
+        let totalImpact = 45; // Base A+ = 45 kWh/an
+        let lines = [];
+        
         Object.entries(selection).forEach(([cat]) => {
           const sw = document.querySelector(`.config-group[data-cat="${cat}"] .config-swatch.selected`);
           if(!sw) return;
           const col = sw.dataset.color;
-          const imp = energyImpact[cat][col] || 120;
-          sum += (imp - 120);
-          if (imp !== 120) {
+          const impact = energyImpact[cat][col] || 0;
+          totalImpact += impact;
+          
+          if (impact > 0) {
             const label = sw.nextElementSibling?.textContent || '';
-            lines.push(`• ${cat} – ${label}: ${imp>120?'+':''}${imp-120} kWh/an`);
+            lines.push(`• ${cat} – ${label}: +${impact} kWh/an`);
           }
         });
 
         // Mise à jour de l'affichage énergétique
-        if (energyEl) energyEl.textContent = `${sum} kWh/an`;
+        if (energyEl) energyEl.textContent = `${totalImpact} kWh/an`;
         
-        const cls = getEnergyClass(sum);
+        const cls = getEnergyClass(totalImpact);
         const displayClass = cls === 'Aplus' ? 'A+' : cls;
         
         if (classEl) classEl.textContent = displayClass;
         
-        const percentage = Math.min(100, Math.round(sum/590*100));
+        const percentage = Math.min(100, Math.round(totalImpact/590*100));
         if (barFill) {
           barFill.style.width = `${percentage}%`;
           barFill.style.background = ratingColors[cls];
