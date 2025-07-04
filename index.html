@@ -65,12 +65,18 @@
     }
 
     model-viewer {
-      width: 100%;
-      height: 100%;
-      background: #dddddd;
-      pointer-events: all;
-      touch-action: pan-x pan-y; /* Permet la rotation du modèle mais empêche le scroll de la page */
-    }
+  width: 100%;
+  height: 100%;
+  background: #dddddd;
+  pointer-events: all;
+  touch-action: pan-x pan-y;
+}
+
+.config-content, .config-grid, .config-options {
+  position: relative;
+  z-index: 100;
+  pointer-events: auto;
+}
 
     /* FLÈCHES D'INDICATION ROTATION STYLE VOLKSWAGEN */
     .rotation-indicators {
@@ -388,16 +394,17 @@
     }
 
     .config-swatch {
-      width: 50px;
-      height: 50px;
-      border: 2px solid #ccc;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.3s ease;
-      transform-origin: center;
-    }
-
+  width: 50px;
+  height: 50px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  transform-origin: center;
+  pointer-events: auto;
+  z-index: 101;
+}
     .config-swatch:hover { 
       border-color: #999;
       transform: scale(1.05);
@@ -522,14 +529,16 @@
     }
 
     .action-buttons button {
-      flex: 1;
-      padding: 0.75rem;
-      font-size: 0.85rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  z-index: 101;
+}
 
     .action-buttons button:hover {
       transform: translateY(-2px);
@@ -1162,16 +1171,6 @@
   </div>
 
   <script>
-    // ⚙️ CONFIGURATION WEBHOOK
-    const WEBHOOK_URL = 'https://votre-webhook.com/api/devis';
-    
-    // Configuration des impacts énergétiques par matériau et couleur
-    // Ajustés pour avoir config de base en A+ (~45 kWh/an) et pire cas en B (~150 kWh/an max)
-    // Plus les couleurs sont foncées, plus l'impact énergétique est élevé
-    const energyImpact = {
-      Toit: {
-        '#9BA1A9': 0,   // Gris clair (base A+) - pas d'impact
-        '#1A2<script>
     // ⚙️ CONFIGURATION WEBHOOK - URL N8N
     const WEBHOOK_URL = 'https://naiom.app.n8n.cloud/webhook-test/submit-config';
     
@@ -1439,6 +1438,12 @@
       if (nameInput && !name) {
         alert('Veuillez saisir votre nom et prénom.');
         nameInput.focus();
+        return;
+      }
+
+      if (phoneInput && !phone) {
+        alert('Veuillez saisir votre numéro de téléphone.');
+        phoneInput.focus();
         return;
       }
 
